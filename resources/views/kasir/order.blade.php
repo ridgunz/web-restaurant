@@ -11,24 +11,24 @@
   <meta name="keywords" content="" />
   <meta name="description" content="" />
   <meta name="author" content="" />
-  <link rel="shortcut icon" href="./assets/frontend/images/favicon.png" type="">
+  <link rel="shortcut icon" href="/assets/frontend/images/favicon.png" type="">
 
   <title> Bakso Simpang Tugu </title>
 
   <!-- bootstrap core css -->
-  <link rel="stylesheet" type="text/css" href="./assets/frontend/css/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="/assets/frontend/css/bootstrap.css" />
 
   <!--owl slider stylesheet -->
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
   <!-- nice select  -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
   <!-- font awesome style -->
-  <link href="./assets/frontend/css/font-awesome.min.css" rel="stylesheet" />
+  <link href="/assets/frontend/css/font-awesome.min.css" rel="stylesheet" />
 
   <!-- Custom styles for this template -->
-  <link href="./assets/frontend/css/style.css" rel="stylesheet" />
+  <link href="/assets/frontend/css/style.css" rel="stylesheet" />
   <!-- responsive style -->
-  <link href="./assets/frontend/css/responsive.css" rel="stylesheet" />
+  <link href="/assets/frontend/css/responsive.css" rel="stylesheet" />
 
   <style>
 
@@ -42,7 +42,7 @@
 
   <div class="hero_area">
     <div class="bg-box">
-      <img src="./assets/frontend/images/hero-bg.jpg" alt="">
+      <img src="/assets/frontend/images/hero-bg.jpg" alt="">
     </div>
     <!-- header section strats -->
     <header class="header_section">
@@ -152,7 +152,7 @@
                     <h6>
                       Rp. 10.000
                     </h6>
-                    <a href="javascript:void(0)" class="open-topping" data-id="{{ $i }}">
+                    <a href="javascript:void(0)" class="open-topping" data-nama="Bakso Tulang Rungu" data-harga="10000" data-id="{{ $i }}">
                       <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
                         <g>
                           <g>
@@ -232,7 +232,7 @@
                     <h6>
                       Rp. 10.000
                     </h6>
-                    <a href="">
+                    <a href="javascript:void(0)">
                       <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
                         <g>
                           <g>
@@ -383,23 +383,35 @@
   <!-- footer section -->
 
   <!-- jQery -->
-  <script src="./assets/frontend/js/jquery-3.4.1.min.js"></script>
+  <script src="/assets/frontend/js/jquery-3.4.1.min.js"></script>
   <!-- popper js -->
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
   </script>
   <!-- bootstrap js -->
-  <script src="./assets/frontend/js/bootstrap.js"></script>
+  <script src="/assets/frontend/js/bootstrap.js"></script>
   <!-- owl slider -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
   </script>
   <!-- isotope js -->
   <script src="https://unpkg.com/isotope-layout@3.0.4/dist/isotope.pkgd.min.js"></script>
   <!-- custom js -->
-  <script src="./assets/frontend/js/custom.js"></script>
+  <script src="/assets/frontend/js/custom.js"></script>
   <!-- Google Map -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
   </script>
   <!-- End Google Map -->
+
+  <script>
+    $('.open-topping').on('click', function(){
+     var namaPemesan = $('input[name="pemesan"]').val();
+     var tipePesanan = $('select[name="tipe_pemesanan"]').val();
+     if(namaPemesan == '' || tipePesanan == ''){
+      alert('harap mengisi data pemesanan')
+     }
+      // alert(tipePesanan);
+
+    });
+  </script>
 
 </body>
 
