@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,15 +21,37 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('home', [HomeController::class, 'index'])->name('home');
 
 
+/*------------------------------------------
+--------------------------------------------
+All Kasir Routes List
+--------------------------------------------
+--------------------------------------------*/
+Route::middleware(['auth', 'user-access:1'])->group(function () {
+  
 
-Route::get('order',function(){
-    return view('order');
 });
 
+/*------------------------------------------
+--------------------------------------------
+All Dapur Routes List
+--------------------------------------------
+--------------------------------------------*/
+Route::middleware(['auth', 'user-access:2'])->group(function () {
+  
 
-Route::get('/order/{id}',function($id){
-    return view('topping', ['id' => $id, 'pesanan' => 'Bakso Tulang Rungu']);
 });
+  
+/*------------------------------------------
+--------------------------------------------
+All Admin Routes List
+--------------------------------------------
+--------------------------------------------*/
+Route::middleware(['auth', 'user-access:3'])->group(function () {
+
+    Route::get('list-menu', [AdminController::class, 'list'])->name('list-menu');
+
+});
+
