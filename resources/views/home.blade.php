@@ -18,7 +18,7 @@
                         @if(auth()->user()->level == 3)
                         {{ __('You are logged in as admin!') }}
                             <br>
-                            <a href="{{ route('list-menu') }}">List Menu</a>
+                            <a href="{{ route('menu') }}">List Menu</a>
                             <br>
                             <a href="#">Tambah Menu</a>
                             <br>
