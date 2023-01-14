@@ -56,5 +56,7 @@ Route::middleware(['auth', 'user-access:3'])->group(function () {
     Route::get('list-minuman', [AdminController::class, 'getMinuman'])->name('list-minuman');
     Route::get('list-topping', [AdminController::class, 'getTopping'])->name('list-topping');
 
+    
+
 });
 
