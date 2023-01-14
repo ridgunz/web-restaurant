@@ -20,3 +20,14 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
+Route::get('order',function(){
+    return view('order');
+});
+
+
+Route::get('/order/{id}',function($id){
+    return view('topping', ['id' => $id, 'pesanan' => 'Bakso Tulang Rungu']);
+});
