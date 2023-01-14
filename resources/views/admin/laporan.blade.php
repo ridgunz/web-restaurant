@@ -2,6 +2,6 @@
 
 @section('content')
 
-INI LIST MENU
+INI LAPORAN MENU
 
 @endsection
