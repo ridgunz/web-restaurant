@@ -60,5 +60,7 @@ Route::middleware(['auth', 'user-access:3'])->group(function () {//admin
     Route::get('laporan', [AdminController::class, 'laporan'])->name('laporan');
     Route::get('absensi', [AdminController::class, 'absensi'])->name('absensi');
 
+    
+
 });
 

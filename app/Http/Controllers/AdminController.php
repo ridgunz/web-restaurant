@@ -33,7 +33,7 @@ class AdminController extends Controller
         if ($request->ajax()) {
             $data = DB::table('menu')
             ->where('kategori','Makanan')
-            ->where('is_active',1)
+            ->orderBy('is_active','desc')
             ->get();
             return Datatables::of($data)
                 ->addColumn('action', function($row){
@@ -50,7 +50,7 @@ class AdminController extends Controller
         if ($request->ajax()) {
             $data = DB::table('menu')
             ->where('kategori','Minuman')
-            ->where('is_active',1)
+            ->orderBy('is_active','desc')
             ->get();
             return Datatables::of($data)
                 ->addColumn('action', function($row){
@@ -67,7 +67,7 @@ class AdminController extends Controller
         if ($request->ajax()) {
             $data = DB::table('menu')
             ->where('kategori','Topping')
-            ->where('is_active',1)
+            ->orderBy('is_active','desc')
             ->get();
             return Datatables::of($data)
                 ->addColumn('action', function($row){
