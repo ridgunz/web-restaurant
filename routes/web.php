@@ -54,3 +54,4 @@ Route::middleware(['auth', 'user-access:3'])->group(function () {
     Route::get('list-menu', [AdminController::class, 'list'])->name('list-menu');
 
 });
+
