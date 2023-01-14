@@ -53,8 +53,10 @@ All Admin Routes List
 --------------------------------------------*/
 Route::middleware(['auth', 'user-access:3'])->group(function () {//admin
 
-    Route::get('list-menu', [AdminController::class, 'list'])->name('list-menu');
-    // Route::get('tambah', [AdminController::class, 'tambah'])->name('tambah');
+    Route::get('menu', [AdminController::class, 'index'])->name('menu');
+    Route::get('list-menu', [AdminController::class, 'getMenu'])->name('list-menu');
+    Route::get('list-minuman', [AdminController::class, 'getMinuman'])->name('list-minuman');
+    Route::get('list-topping', [AdminController::class, 'getTopping'])->name('list-topping');
     Route::get('laporan', [AdminController::class, 'laporan'])->name('laporan');
     Route::get('absensi', [AdminController::class, 'absensi'])->name('absensi');
 
