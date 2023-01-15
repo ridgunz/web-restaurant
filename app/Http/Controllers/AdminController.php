@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
+
     public function index()
     {
         return view('admin.list-menu', ['menu' => 'List Menu']);
@@ -26,6 +27,7 @@ class AdminController extends Controller
     public function absensi()
     {
         return view('admin.absensi', ['menu' => 'Absensi']);
+
     }
 
     public function getMenu(Request $request)
@@ -33,7 +35,7 @@ class AdminController extends Controller
         if ($request->ajax()) {
             $data = DB::table('menu')
             ->where('kategori','Makanan')
-            ->where('is_active',1)
+            ->orderBy('is_active','desc')
             ->get();
             return Datatables::of($data)
                 ->addColumn('action', function($row){
@@ -43,6 +45,11 @@ class AdminController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
+    }
+
+    public function index_minuman()
+    {
+        return view('admin.list-minuman', ['menu' => 'List Menu']);
     }
 
     public function getMinuman(Request $request)
@@ -50,7 +57,7 @@ class AdminController extends Controller
         if ($request->ajax()) {
             $data = DB::table('menu')
             ->where('kategori','Minuman')
-            ->where('is_active',1)
+            ->orderBy('is_active','desc')
             ->get();
             return Datatables::of($data)
                 ->addColumn('action', function($row){
@@ -62,12 +69,17 @@ class AdminController extends Controller
         }
     }
 
+    public function index_topping()
+    {
+        return view('admin.list-topping', ['menu' => 'List Menu']);
+    }
+
     public function getTopping(Request $request)
     {
         if ($request->ajax()) {
             $data = DB::table('menu')
             ->where('kategori','Topping')
-            ->where('is_active',1)
+            ->orderBy('is_active','desc')
             ->get();
             return Datatables::of($data)
                 ->addColumn('action', function($row){

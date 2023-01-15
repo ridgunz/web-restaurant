@@ -132,6 +132,20 @@
                 <div data-i18n="Analytics">Dashboard</div>
               </a>
             </li>
+
+            <!-- Layouts -->
+            <li class="menu-item open">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <div data-i18n="Layouts">Menu</div>
+              </a>
+
+              <ul class="menu-sub">
+                <li class="menu-item @if(isset($menu)) @if($menu=='List Menu') active @endif @endif">
+                  <a href="{{ route('menu') }}" class="menu-link">
+                    <div data-i18n="List Menu">List Menu</div>
+                  </a>
+                </li>
                 <!-- <li class="menu-item">
                   <a href="layouts-without-navbar.html" class="menu-link">
                     <div data-i18n="Tambah Menu">Tambah Menu</div>
