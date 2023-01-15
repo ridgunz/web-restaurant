@@ -8,6 +8,22 @@ use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
+
+    public function tambah()
+    {
+        return view('admin.tambah-menu', ['menu' => 'Tambah Menu']);
+    }
+
+    public function laporan()
+    {
+        return view('admin.laporan', ['menu' => 'Laporan']);
+    }
+
+    public function absensi()
+    {
+        return view('admin.absensi', ['menu' => 'Absensi']);
+    }
+
     public function index()
     {
         return view('admin.list-menu', ['menu' => 'List Menu']);
@@ -26,6 +42,7 @@ class AdminController extends Controller
     public function absensi()
     {
         return view('admin.absensi', ['menu' => 'Absensi']);
+
     }
 
     public function getMenu(Request $request)
@@ -45,6 +62,11 @@ class AdminController extends Controller
         }
     }
 
+    public function index_minuman()
+    {
+        return view('admin.list-minuman', ['menu' => 'List Menu']);
+    }
+
     public function getMinuman(Request $request)
     {
         if ($request->ajax()) {
@@ -60,6 +82,11 @@ class AdminController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
+    }
+
+    public function index_topping()
+    {
+        return view('admin.list-topping', ['menu' => 'List Menu']);
     }
 
     public function getTopping(Request $request)
