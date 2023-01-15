@@ -12,16 +12,12 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header">{{ __('List Menu Makanan') }}
-                <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" style="float: right">
-                  Tambah Data
-                </a>
-                </div>
+                <div class="card-header">{{ __('List Menu Minuman') }}</div>
                 <div class="card-body">
-                <table class="table data-menu">
+                <table class="table data-minuman">
                   <thead class="thead-dark">
                     <tr>
-                      <th>ID</th>
+                      <th>No</th>
                       <th>Nama Menu</th>
                       <th>Deskripsi</th>
                       <th>Harga</th>
@@ -122,14 +118,14 @@
 
 <script type="text/javascript">
  $(function () {
-    var table = $('.data-menu').DataTable({
+    var table = $('.data-minuman').DataTable({
         processing: true,
         serverSide: true,
         ordering: false,
         searching:true,
         info:false,
         lengthChange: false,
-        ajax: "{{ route('list-menu') }}",
+        ajax: "{{ route('list-minuman') }}",
         columns: [
             {data: 'id', name: 'id'},
             {data: 'nama', name: 'nama',  width: '120px'},
@@ -155,5 +151,6 @@
             },
         ]
     });
+    
   });
 </script>
