@@ -132,6 +132,25 @@
                 <div data-i18n="Analytics">Dashboard</div>
               </a>
             </li>
+                <!-- <li class="menu-item">
+                  <a href="layouts-without-navbar.html" class="menu-link">
+                    <div data-i18n="Tambah Menu">Tambah Menu</div>
+                  </a>
+                </li> -->
+                <li class="menu-item @if(isset($menu)) @if($menu=='Laporan') active @endif @endif">
+                  <a href="{{ route('laporan') }}" class="menu-link">
+
+                <i class="menu-icon tf-icons bx bx-bar-chart-alt-2"></i>
+                    <div data-i18n="Laporan">Laporan</div>
+                  </a>
+                </li>
+                <li class="menu-item @if(isset($menu)) @if($menu=='Absensi') active @endif @endif">
+                  <a href="{{ route('absensi') }}" class="menu-link">
+
+                <i class="menu-icon tf-icons bx bx-time"></i>
+                    <div data-i18n="Absensi">Absensi</div>
+                  </a>
+                </li>
 
             <!-- Layouts -->
             <li class="menu-item open">
@@ -142,8 +161,8 @@
 
               <ul class="menu-sub">
                 <li class="menu-item @if(isset($menu)) @if($menu=='List Menu') active @endif @endif">
-                  <a href="{{ route('list-menu') }}" class="menu-link">
-                    <div data-i18n="List Menu">List Menu</div>
+                  <a href="{{ route('menu') }}" class="menu-link">
+                    <div data-i18n="List Menu">Makanan</div>
                   </a>
                 </li>
                 <!-- <li class="menu-item">
@@ -152,56 +171,31 @@
                   </a>
                 </li> -->
                 <li class="menu-item @if(isset($menu)) @if($menu=='Laporan') active @endif @endif">
-                  <a href="{{ route('laporan') }}" class="menu-link">
-                    <div data-i18n="Laporan">Laporan</div>
+                  <a href="{{ route('menu') }}" class="menu-link">
+                    <div data-i18n="Laporan">Topping</div>
                   </a>
                 </li>
                 <li class="menu-item @if(isset($menu)) @if($menu=='Absensi') active @endif @endif">
-                  <a href="{{ route('absensi') }}" class="menu-link">
-                    <div data-i18n="Absensi">Absensi</div>
+                  <a href="{{ route('menu') }}" class="menu-link">
+                    <div data-i18n="Absensi">Minuman</div>
                   </a>
                 </li>
               </ul>
             </li>
 
-            <li class="menu-header small text-uppercase">
-              <span class="menu-header-text">Pages</span>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                <div data-i18n="Account Settings">Account Settings</div>
-              </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="pages-account-settings-account.html" class="menu-link">
-                    <div data-i18n="Account">Account</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="pages-account-settings-notifications.html" class="menu-link">
-                    <div data-i18n="Notifications">Notifications</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="pages-account-settings-connections.html" class="menu-link">
-                    <div data-i18n="Connections">Connections</div>
-                  </a>
-                </li>
-              </ul>
-            </li>
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Others</span></li>
             <li class="menu-item">
               
                 <a class="menu-link" href="{{ route('logout') }}"
                     onclick="event.preventDefault();
                                     document.getElementById('logout-form').submit();">
+
+                <i class="menu-icon tf-icons bx bx-support"></i>
                     {{ __('Logout') }}
 
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                     @csrf
                 </form>
-                <i class="menu-icon tf-icons bx bx-support"></i>
               </a>
             </li>
             
@@ -211,6 +205,47 @@
 
         <!-- Layout container -->
         <div class="layout-page">
+        <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+              <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                <i class="bx bx-menu bx-sm"></i>
+              </a>
+            </div>
+
+            <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+            
+
+              <ul class="navbar-nav flex-row align-items-center ms-auto">
+                <!-- Place this tag where you want the button to render. -->
+                <li class="nav-item lh-1 me-3">
+                  <span></span>
+                </li>
+
+                <!-- User -->
+                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                  <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    Menu
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    
+                    <li>
+                    <a class="dropdown-item" href="{{ route('logout') }}"
+                    onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+                    {{ __('Logout') }}
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+                <i class="menu-icon tf-icons bx bx-support"></i>
+              </a>
+                    </li>
+                  </ul>
+                </li>
+                <!--/ User -->
+              </ul>
+            </div>
+          </nav>
           <!-- Content wrapper -->
           <div class="content-wrapper">
             <!-- Content -->
