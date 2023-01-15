@@ -142,7 +142,7 @@
 
               <ul class="menu-sub">
                 <li class="menu-item @if(isset($menu)) @if($menu=='List Menu') active @endif @endif">
-                  <a href="{{ route('list-menu') }}" class="menu-link">
+                  <a href="{{ route('menu') }}" class="menu-link">
                     <div data-i18n="List Menu">List Menu</div>
                   </a>
                 </li>
