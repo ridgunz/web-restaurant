@@ -12,7 +12,7 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header">{{ __('List Menu Makanan') }}
+                <div class="card-header">{{ __('List Menu Topping') }}
                 <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" style="float: right">
                   Tambah Data
                 </a>
@@ -155,5 +155,75 @@
             },
         ]
     });
+    
+
+    var table = $('.data-minuman').DataTable({
+        processing: true,
+        serverSide: true,
+        ordering: false,
+        searching:true,
+        info:false,
+        lengthChange: false,
+        ajax: "{{ route('list-minuman') }}",
+        columns: [
+            {data: 'id', name: 'id'},
+            {data: 'nama', name: 'nama',  width: '120px'},
+            {data: 'deskripsi', name: 'deskripsi',  width: '150px'},
+            {data: 'amount', name: 'amount'},
+            {data: 'image', name: 'image'},
+            {data: 'stock', name: 'stock'},
+            {data: 'is_active',
+              render: function(data, type, row) {
+                if(data == '1') {  
+                    return 'Yes'; 
+                }else if (data == '0' ) {
+                    return 'No'; 
+                }
+              }
+            },
+            {
+                data: 'action', 
+                name: 'action', 
+                orderable: false, 
+                searchable: false,
+                width: '200px',
+            },
+        ]
+    });
+
+    var table = $('.data-topping').DataTable({
+        processing: true,
+        serverSide: true,
+        ordering: false,
+        searching:true,
+        info:false,
+        lengthChange: false,
+        ajax: "{{ route('list-topping') }}",
+        columns: [
+            {data: 'id', name: 'id'},
+            {data: 'nama', name: 'nama',  width: '120px'},
+            {data: 'deskripsi', name: 'deskripsi',  width: '150px'},
+            {data: 'amount', name: 'amount'},
+            {data: 'image', name: 'image'},
+            {data: 'stock', name: 'stock'},
+            {data: 'is_active',
+              render: function(data, type, row) {
+                if(data == '1') {  
+                    return 'Yes'; 
+                }else if (data == '0' ) {
+                    return 'No'; 
+                }
+              }
+            },
+            {
+                data: 'action', 
+                name: 'action', 
+                orderable: false, 
+                searchable: false,
+                width: '200px',
+            },
+        ]
+    });
+    
   });
 </script>
