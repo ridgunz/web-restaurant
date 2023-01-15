@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\KasirController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,8 +30,9 @@ Route::get('home', [HomeController::class, 'index'])->name('home');
 All Kasir Routes List
 --------------------------------------------
 --------------------------------------------*/
-Route::middleware(['auth', 'user-access:1'])->group(function () {
-  
+Route::middleware(['auth', 'user-access:1'])->group(function () { //kasir
+    Route::get('order', [KasirController::class, 'order'])->name('order');
+    Route::get('order/{makanan}/{id}', [KasirController::class, 'topping'])->name('order-topping');
 
 });
 
@@ -39,7 +41,7 @@ Route::middleware(['auth', 'user-access:1'])->group(function () {
 All Dapur Routes List
 --------------------------------------------
 --------------------------------------------*/
-Route::middleware(['auth', 'user-access:2'])->group(function () {
+Route::middleware(['auth', 'user-access:2'])->group(function () { //dapur
   
 
 });
@@ -49,7 +51,7 @@ Route::middleware(['auth', 'user-access:2'])->group(function () {
 All Admin Routes List
 --------------------------------------------
 --------------------------------------------*/
-Route::middleware(['auth', 'user-access:3'])->group(function () {
+Route::middleware(['auth', 'user-access:3'])->group(function () {//admin
 
     Route::get('menu', [AdminController::class, 'index'])->name('menu');
     Route::get('list-menu', [AdminController::class, 'getMenu'])->name('list-menu');
@@ -59,6 +61,8 @@ Route::middleware(['auth', 'user-access:3'])->group(function () {
 
     Route::get('menu-topping', [AdminController::class, 'index_topping'])->name('topping');
     Route::get('list-topping', [AdminController::class, 'getTopping'])->name('list-topping');
+    Route::get('laporan', [AdminController::class, 'laporan'])->name('laporan');
+    Route::get('absensi', [AdminController::class, 'absensi'])->name('absensi');
 
     Route::get('laporan', [AdminController::class, 'laporan'])->name('laporan');
     Route::get('absensi', [AdminController::class, 'absensi'])->name('absensi');
