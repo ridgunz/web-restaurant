@@ -1,23 +1,25 @@
-@extends('layouts.app')
+@extends('layouts.layout')
 
 @section('content')
 
-<head>
 <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/> -->
     <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-</head>
+    </meta>
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="card">
-                <div class="card-header">{{ __('List Menu Makanan') }}
-                <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" style="float: right">
-                  Tambah Data
-                </a>
+                <div class="card-header">
+                  {{ __('List Menu Minuman') }}
+                  <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" style="float:right;">
+                    Tambah Data
+                  </a>
                 </div>
-                <div class="card-body">
+                
+          <div class="card-body">
+            <div class="table-responsive">
                 <table class="table data-menu">
                   <thead class="thead-dark">
                     <tr>
@@ -33,12 +35,12 @@
                   </thead>
                   <!-- Masukan data disini -->
                 </table>
-                </div>
+              </div>
             </div>
         </div>
+      </div>
     </div>
 </div>
-
 <!-- MULAI MODAL-->
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="modal fade" id="myModal" aria-hidden="true">

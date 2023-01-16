@@ -42,12 +42,27 @@
 
     <!-- Page CSS -->
 
+    
+
     <!-- Helpers -->
     <script src="/assets/vendor/js/helpers.js"></script>
 
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="/assets/js/config.js"></script>
+
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>   -->
+    <script src="/assets/vendor/libs/popper/popper.js"></script>
+    <script src="/assets/vendor/js/bootstrap.js"></script>
+    <script src="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+
+    <!-- Page JS -->
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
   </head>
 
   <body>
@@ -185,12 +200,12 @@
                   </a>
                 </li> -->
                 <li class="menu-item @if(isset($menu)) @if($menu=='Laporan') active @endif @endif">
-                  <a href="{{ route('menu') }}" class="menu-link">
+                  <a href="{{ route('topping') }}" class="menu-link">
                     <div data-i18n="Laporan">Topping</div>
                   </a>
                 </li>
                 <li class="menu-item @if(isset($menu)) @if($menu=='Absensi') active @endif @endif">
-                  <a href="{{ route('menu') }}" class="menu-link">
+                  <a href="{{ route('minuman') }}" class="menu-link">
                     <div data-i18n="Absensi">Minuman</div>
                   </a>
                 </li>
@@ -243,16 +258,16 @@
                   <ul class="dropdown-menu dropdown-menu-end">
                     
                     <li>
-                    <a class="dropdown-item" href="{{ route('logout') }}"
-                    onclick="event.preventDefault();
-                                    document.getElementById('logout-form').submit();">
-                    {{ __('Logout') }}
+                      <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();">
+                            {{ __('Logout') }}
 
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                    @csrf
-                </form>
-                <i class="menu-icon tf-icons bx bx-support"></i>
-              </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                        <i class="menu-icon tf-icons bx bx-support"></i>
+                      </a>
                     </li>
                   </ul>
                 </li>
@@ -266,18 +281,12 @@
 
             <div class="container-xxl flex-grow-1 container-p-y">
              <div class="col-lg-12 mb-4 order-0">
-                  <div class="card">
                     <div class="d-flex align-items-end row">
-                        <div class="card-body">
+                        <!-- <div class="card-body">
                           <h5 class="card-title text-primary">Menu</h5>
                           
-                      </div>
-                      <div class="text-center text-sm-left">
-                        <div class="card-body">
+                      </div> -->
                             @yield('content')
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
             </div>
@@ -329,13 +338,6 @@
     <!-- / Layout wrapper -->
 
 
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
-    <script src="/assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="/assets/vendor/libs/popper/popper.js"></script>
-    <script src="/assets/vendor/js/bootstrap.js"></script>
-    <script src="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-
     <script src="/assets/vendor/js/menu.js"></script>
     <!-- endbuild -->
 
@@ -344,9 +346,6 @@
     <!-- Main JS -->
     <script src="/assets/js/main.js"></script>
 
-    <!-- Page JS -->
 
-    <!-- Place this tag in your head or just before your close body tag. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
   </body>
 </html>

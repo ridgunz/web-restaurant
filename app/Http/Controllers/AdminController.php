@@ -19,6 +19,11 @@ class AdminController extends Controller
         return view('admin.tambah-menu', ['menu' => 'Tambah Menu']);
     }
 
+    public function dashboard_menu()
+    {
+        return view('admin.dashboard-menu', ['menu' => 'Dashboard Menu']);
+    }
+
     public function laporan()
     {
         return view('admin.laporan', ['menu' => 'Laporan']);

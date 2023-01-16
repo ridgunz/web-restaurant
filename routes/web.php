@@ -56,6 +56,8 @@ Route::middleware(['auth', 'user-access:3'])->group(function () {//admin
     Route::get('menu', [AdminController::class, 'index'])->name('menu');
     Route::get('list-menu', [AdminController::class, 'getMenu'])->name('list-menu');
 
+    Route::get('dashboard-menu', [AdminController::class, 'dashboard_menu'])->name('dashboard-menu');
+
     Route::get('menu-minuman', [AdminController::class, 'index_minuman'])->name('minuman');
     Route::get('list-minuman', [AdminController::class, 'getMinuman'])->name('list-minuman');
 
