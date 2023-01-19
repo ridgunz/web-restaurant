@@ -96,7 +96,7 @@
         <div class="col-md-6">
             <div class="from-group p-2">
                 <label for="username">Kasir</label>
-                <input type="text" class="form-control" placeholder="Username" aria-label="Username" value="Dikmars" readonly>
+                <input type="text" class="form-control" id="kasir" placeholder="Username" aria-label="Username" value="Dikmars" data-id="1" readonly>
             </div>
         </div>
         <div class="col-md-6">
@@ -403,12 +403,20 @@
 
   <script>
     $('.open-topping').on('click', function(){
+     var id_kasir = $('#kasir').attr('data-id');
      var namaPemesan = $('input[name="pemesan"]').val();
      var tipePesanan = $('select[name="tipe_pemesanan"]').val();
+     var namaMakanan = $(this).data('nama');
+     var hargaMakanan = $(this).data('harga'); 
+     var idMakanan = $(this).data('id');
      if(namaPemesan == '' || tipePesanan == ''){
       alert('harap mengisi data pemesanan')
+      return false;
      }
+    //  console.log("/"+id_kasir+'/'+namaPemesan+'/'+tipePesanan+'/'+namaMakanan+'/'+idMakanan+'/'+hargaMakanan)
+     window.location.href = "http://localhost:8000/order/"+id_kasir+'/'+namaPemesan+'/'+tipePesanan+'/'+namaMakanan+'/'+hargaMakanan+'/'+idMakanan;
       // alert(tipePesanan);
+      
 
     });
   </script>

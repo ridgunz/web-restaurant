@@ -96,6 +96,15 @@
         <h2>
           Topping {{ $nama_makanan }}
         </h2>
+
+        <form action="{{ route('place-order'); }}" method="POST" id="form-order">
+          <input type="text" id="id_kasir" value="{{ $id_kasir }}">
+          <input type="text" id="pemesan" value="{{ $pemesan }}">
+          <input type="text" id="tipe_pemesanan" value="{{ $tipe_pemesanan }}">
+          <input type="text" id="id_makanan" value="{{ $id }}">
+          <input type="text" id="harga" value="{{ $harga }}">
+          <input type="text" id="topping" value="">
+        </form>
       </div>
 
       <ul class="filters_menu">
@@ -131,6 +140,13 @@
           </div>
         @endfor
         
+        </div>
+        <div class="row mt-4" style="float: right;">
+          <div>
+            <a href="javascript:void(0)" id="back" class="btn btn-danger">Batal</a>
+            <a href="javascript:void(0)" id="order" class="btn btn-primary">Pesan Pesanan</a>
+          </div>
+          
         </div>
       </div>
     </div>
@@ -245,28 +261,43 @@
     $('.choose-topping').click(function(){
         var choosen = $(this).attr('data-choosen');
         var idChoosen = $(this).attr('data-id');
-        // $(this).attr('data-choosen', choosen);
         if(choosen == 'true'){
             choosen = 'false';
             $(this).html('<i class="fa fa-shopping-cart" style="color:white;"></i>');
-            
-            // choosenTopping = jQuery.grep(choosenTopping, function(value) {
-            //     return value != idChoosen;
-            // });
+            $(this).css('background-color', '#ffbe33');
             choosenTopping.splice( $.inArray(idChoosen, choosenTopping), 1 );
         }else{
             choosen = 'true';
             $(this).html('<i class="fa fa-check" style="color:white;"></i>');
+            $(this).css('background-color', '#39aad7');
             choosenTopping.push(idChoosen);
         }
         $(this).attr('data-choosen', choosen);
-        console.log(choosen);
+        $('#topping').val(JSON.stringify(choosenTopping));
+    });
 
-        console.log(idChoosen);
-        console.log(choosenTopping);
+    $('#back').click(function(){
+      window.history.back();
+    });
 
+    $('#order').click(function(){
+      // $('#form-order').submit();
 
-        // alert(choosen);
+      var form = $('#form-order');
+      var actionUrl = form.attr('action');
+
+      $.ajax({
+        headers: {
+            'X-CSRF-TOKEN':'{{ csrf_token() }}'
+        },
+        type: "POST",
+        url: actionUrl,
+        data: form.serialize(), // serializes the form's elements.
+        success: function(data)
+        {
+          alert(data); // show response from the php script.
+        }
+    });
     });
   </script>
 
