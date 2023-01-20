@@ -21,4 +21,6 @@ class menu extends Model
     ];
 
     public $timestamps = true;
+
+    public $table = "menu";
 }

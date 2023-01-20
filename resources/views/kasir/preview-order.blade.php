@@ -21,7 +21,7 @@
   <!--owl slider stylesheet -->
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
   <!-- nice select  -->
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" /> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
   <!-- font awesome style -->
   <link href="/assets/frontend/css/font-awesome.min.css" rel="stylesheet" />
 
@@ -92,59 +92,69 @@
 
   <section class="food_section layout_padding">
     <div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="from-group p-2">
+                <label for="username">Kasir</label>
+                <input type="text" class="form-control" id="kasir" placeholder="Username" aria-label="Username" value="Dikmars" data-id="1" readonly>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="from-group p-2">
+                <label for="username">Pemesan</label>
+                <input type="text" class="form-control" placeholder="Nama Pemesan / No Meja" name="pemesan" aria-label="pemesan" >
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="from-group p-2">
+                <label for="username">Tipe Pemesanan</label><br>
+                <select class="form-control" name="tipe_pemesanan" required>
+                    <option value="">-- Pilih --</option>
+                    <option value="1">Bungkus</option>
+                    <option value="2">Makan ditempat</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
       <div class="heading_container heading_center">
         <h2>
-          Topping {{ $nama_makanan }}
+          Pesanan
         </h2>
-
-        <form action="{{ route('place-order'); }}" method="POST" id="form-order">
-          <input type="text" id="id_kasir" value="{{ $id_kasir }}">
-          <input type="text" id="pemesan" value="{{ $pemesan }}">
-          <input type="text" id="tipe_pemesanan" value="{{ $tipe_pemesanan }}">
-          <input type="text" id="id_makanan" value="{{ $id }}">
-          <input type="text" id="harga" value="{{ $harga }}">
-          <input type="text" id="topping" value="">
-        </form>
       </div>
 
-      <ul class="filters_menu">
-        <li class="active" data-filter="*">Topping</li>
-      </ul>
+      <div class="content">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width: 100%;">Pesanan</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Bakso Urat<br>(Mie, Jamur, Sawi)</td>
+                    <td><a href="#" class="btn btn-danger btn-sm">Hapus</a></td>
+                </tr>
+                
+                <tr>
+                    <td>Bakso Urat<br>(Mie, Jamur, Sawi)</td>
+                    <td><a href="#" class="btn btn-danger btn-sm">Hapus</a></td>
+                </tr>
 
-      <div class="filters-content">
-        <div class="row grid">
+                <tr>
+                    <td>Bakso Urat<br>(Mie, Jamur, Sawi)</td>
+                    <td><a href="#" class="btn btn-danger btn-sm">Hapus</a></td>
+                </tr>
+            </tbody>
+        </table>
 
-        @for ($i = 1; $i <= 5; $i++)
-          <div class="col-sm-6 col-lg-4 all bakso">
-            <div class="box">
-              <div>
-                <div class="img-box m-0 p-0" style="height:auto;">
-                  <img src="https://akcdn.detik.net.id/community/media/visual/2019/08/12/dca21bf3-923c-486f-bc2e-a3dcd759b1df.jpeg" style="width: 100%; height: auto; object-fit: cover;" alt="">
-                </div>
-                <div class="detail-box">
-                  <h5>
-                    Topping {{ $i }}
-                  </h5>
-                  
-                  <div class="options">
-                    <h6>
-                      Rp. 10.000
-                    </h6>
-                    <a href="javascript:void(0)" class="choose-topping" data-choosen="false" data-id="{{ $i }}">
-                      <i class="fa fa-shopping-cart" style="color:white;"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        @endfor
-        
-        </div>
         <div class="row mt-4" style="float: right;">
           <div>
-            <a href="javascript:void(0)" id="back" class="btn btn-danger">Batal</a>
-            <a href="javascript:void(0)" id="order" class="btn btn-primary">Pesan Pesanan</a>
+            <a href="javascript:void(0)" id="back" class="btn btn-primary">Pilih Menu</a>
+            <a href="javascript:void(0)" id="order" class="btn btn-success">Pesan</a>
           </div>
         </div>
       </div>
@@ -256,47 +266,22 @@
   <!-- End Google Map -->
 
   <script>
-    const choosenTopping = [];
-    $('.choose-topping').click(function(){
-        var choosen = $(this).attr('data-choosen');
-        var idChoosen = $(this).attr('data-id');
-        if(choosen == 'true'){
-            choosen = 'false';
-            $(this).html('<i class="fa fa-shopping-cart" style="color:white;"></i>');
-            $(this).css('background-color', '#ffbe33');
-            choosenTopping.splice( $.inArray(idChoosen, choosenTopping), 1 );
-        }else{
-            choosen = 'true';
-            $(this).html('<i class="fa fa-check" style="color:white;"></i>');
-            $(this).css('background-color', '#39aad7');
-            choosenTopping.push(idChoosen);
-        }
-        $(this).attr('data-choosen', choosen);
-        $('#topping').val(JSON.stringify(choosenTopping));
-    });
+    $('.open-topping').on('click', function(){
+     var id_kasir = $('#kasir').attr('data-id');
+     var namaPemesan = $('input[name="pemesan"]').val();
+     var tipePesanan = $('select[name="tipe_pemesanan"]').val();
+     var namaMakanan = $(this).data('nama');
+     var hargaMakanan = $(this).data('harga'); 
+     var idMakanan = $(this).data('id');
+     if(namaPemesan == '' || tipePesanan == ''){
+      alert('harap mengisi data pemesanan')
+      return false;
+     }
+    //  console.log("/"+id_kasir+'/'+namaPemesan+'/'+tipePesanan+'/'+namaMakanan+'/'+idMakanan+'/'+hargaMakanan)
+     window.location.href = "http://localhost:8000/order/"+id_kasir+'/'+namaPemesan+'/'+tipePesanan+'/'+namaMakanan+'/'+hargaMakanan+'/'+idMakanan;
+      // alert(tipePesanan);
+      
 
-    $('#back').click(function(){
-      window.history.back();
-    });
-
-    $('#order').click(function(){
-      // $('#form-order').submit();
-
-      var form = $('#form-order');
-      var actionUrl = form.attr('action');
-
-      $.ajax({
-        headers: {
-            'X-CSRF-TOKEN':'{{ csrf_token() }}'
-        },
-        type: "POST",
-        url: actionUrl,
-        data: {id_kasir : {{ Session('id_kasir') }},pemesan : $('#pemesan').val(), tipe: $('#tipe_pemesanan').val(), id_makanan: $('#id_makanan').val(), topping: $('#topping').val()}, // serializes the form's elements.
-        success: function(data)
-        {
-          alert(data); // show response from the php script.
-        }
-    });
     });
   </script>
 

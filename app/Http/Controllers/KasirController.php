@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Session;
+use App\Models\Menu;
 
 class KasirController extends Controller
 {
     public function order(){
-        return view('kasir.order');
+        // $data = Menu::all();
+        $makanan = Menu::where('kategori', 'Makanan')->get();
+        $minuman = Menu::where('kategori', 'Minuman')->get();
+
+        // print_r($data);die();
+        return view('kasir.order', ['makanan' => $makanan,'minuman'=> $minuman]);
     }
 
     public function topping(Request $request){
@@ -16,6 +23,15 @@ class KasirController extends Controller
     }
 
     public function place_order(Request $request){
-        print_r($_POST);
+        // Session(['id_kasir'=> 4]);
+        // print_r($_POST);
+        // echo $request->post('id_kasir');
+        // $data = $request->session()->all();
+        // echo Session('id_kasir');
+        // dd($data);
+    }
+
+    public function preview_order(){
+        return view('kasir.preview-order');
     }
 }

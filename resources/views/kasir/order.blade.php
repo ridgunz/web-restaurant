@@ -96,7 +96,7 @@
         <div class="col-md-6">
             <div class="from-group p-2">
                 <label for="username">Kasir</label>
-                <input type="text" class="form-control" id="kasir" placeholder="Username" aria-label="Username" value="Dikmars" data-id="1" readonly>
+                <input type="text" class="form-control" id="kasir" placeholder="Username" aria-label="Username" value="Dikmars" data-id="{{ Session('id_kasir') }}" readonly>
             </div>
         </div>
         <div class="col-md-6">
@@ -127,15 +127,15 @@
 
       <ul class="filters_menu">
         <li class="active" data-filter="*">Semua</li>
-        <li data-filter=".bakso">Bakso</li>
-        <li data-filter=".minuman">Minuman</li>
+        <li data-filter=".Makanan">Makanan</li>
+        <li data-filter=".Minuman">Minuman</li>
       </ul>
 
       <div class="filters-content">
         <div class="row grid">
 
-        @for ($i = 1; $i <= 5; $i++)
-          <div class="col-sm-6 col-lg-4 all bakso">
+        @foreach($makanan as $key => $value)
+          <div class="col-sm-6 col-lg-4 all {{ $value->kategori }}">
             <div class="box">
               <div>
                 <div class="img-box m-0 p-0" style="height:auto;">
@@ -143,16 +143,16 @@
                 </div>
                 <div class="detail-box">
                   <h5>
-                    Bakso {{ $i }}
+                    {{ $value->nama }}
                   </h5>
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia quos autem dolorem minima fugiat id ad delectus vel quidem dicta? Officia nisi ratione doloribus architecto exercitationem temporibus cumque consequatur illum.
+                    {{ $value->deskripsi }}
                   </p>
                   <div class="options">
                     <h6>
-                      Rp. 10.000
+                      Rp. {{ number_format($value->amount) }}
                     </h6>
-                    <a href="javascript:void(0)" class="open-topping" data-nama="Bakso Tulang Rungu" data-harga="10000" data-id="{{ $i }}">
+                    <a href="javascript:void(0)" class="open-topping" data-nama="Bakso Tulang Rungu" data-harga="10000" data-id="{{ $key }}">
                       <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
                         <g>
                           <g>
@@ -211,28 +211,27 @@
               </div>
             </div>
           </div>
-        @endfor
-        
+        @endforeach
 
-        @for ($i = 1; $i <= 5; $i++)
-          <div class="col-sm-6 col-lg-4 all minuman">
+        @foreach($minuman as $key => $value)
+          <div class="col-sm-6 col-lg-4 all {{ $value->kategori }}">
             <div class="box">
               <div>
                 <div class="img-box m-0 p-0" style="height:auto;">
-                  <img src="https://cdn1.katadata.co.id/media/images/thumb/2022/10/14/Ilustrasi_Es_Cendol-2022_10_14-02_55_15_b133d4980a7e317c10cb24038bfe7af3_960x640_thumb.jpeg" style="width: 100%; height: auto; object-fit: cover;" alt="">
+                  <img src="https://akcdn.detik.net.id/community/media/visual/2019/08/12/dca21bf3-923c-486f-bc2e-a3dcd759b1df.jpeg" style="width: 100%; height: auto; object-fit: cover;" alt="">
                 </div>
                 <div class="detail-box">
                   <h5>
-                    Minuman {{ $i }}
+                    {{ $value->nama }}
                   </h5>
                   <p>
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Odio quisquam et nesciunt. Soluta error voluptatum, nam voluptatem quasi, esse et officiis, velit explicabo voluptas perspiciatis expedita architecto necessitatibus ab reiciendis.
+                    {{ $value->deskripsi }}
                   </p>
                   <div class="options">
                     <h6>
-                      Rp. 10.000
+                      Rp. {{ number_format($value->amount) }}
                     </h6>
-                    <a href="javascript:void(0)">
+                    <a href="javascript:void(0)" class="open-topping" data-nama="{{ $value->nama }}" data-harga="{{ $value->amount }}" data-id="{{ $key }}">
                       <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
                         <g>
                           <g>
@@ -291,7 +290,7 @@
               </div>
             </div>
           </div>
-        @endfor
+        @endforeach
         </div>
       </div>
     </div>
