@@ -413,7 +413,7 @@
       return false;
      }
     //  console.log("/"+id_kasir+'/'+namaPemesan+'/'+tipePesanan+'/'+namaMakanan+'/'+idMakanan+'/'+hargaMakanan)
-     window.location.href = "http://localhost:8000/order/"+id_kasir+'/'+namaPemesan+'/'+tipePesanan+'/'+namaMakanan+'/'+hargaMakanan+'/'+idMakanan;
+     window.location.href = "http://localhost:8000/order/"+namaPemesan+'/'+tipePesanan+'/'+namaMakanan+'/'+hargaMakanan+'/'+idMakanan;
       // alert(tipePesanan);
       
 

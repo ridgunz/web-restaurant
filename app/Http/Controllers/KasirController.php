@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Session;
 use App\Models\Menu;
 
+use App\Models\temp_order_cart;
+use Auth;
+
 class KasirController extends Controller
 {
     public function order(){
@@ -17,9 +20,10 @@ class KasirController extends Controller
         return view('kasir.order', ['makanan' => $makanan,'minuman'=> $minuman]);
     }
 
-    public function topping(Request $request){
-        // dd($request);{id_kasir}/{pemesan}/{tipe_pemesanan}/{makanan}/{id}/{harga}
-        return view('kasir.topping', ['id' => $request->id, 'nama_makanan' => $request->makanan, 'id_kasir' => $request->id_kasir, 'pemesan' => $request->pemesan, 'tipe_pemesanan' => $request->tipe_pemesanan, 'harga' => $request->harga]);
+    public function topping($pemesan,$tipe_pemesanan, $makanan, $harga, $id){
+
+        // dd($request);{pemesan}/{tipe_pemesanan}/{makanan}/{id}/{harga}
+        return view('kasir.topping', ['id' => $id, 'nama_makanan' => $makanan, 'pemesan' => $pemesan, 'tipe_pemesanan' => $tipe_pemesanan, 'harga' => $harga]);
     }
 
     public function place_order(Request $request){
@@ -29,6 +33,17 @@ class KasirController extends Controller
         // $data = $request->session()->all();
         // echo Session('id_kasir');
         // dd($data);
+        echo $_POST['id_kasir'];
+        echo $_POST['pemesan'];
+        echo $_POST['tipe'];
+
+        $insert = new temp_order_cart;
+
+        $insert->kasir_id = $request->id_kasir;
+        $insert->pemesan = $request->pemesan;
+        $insert->tipe = $request->tipe;
+        
+        $insert->save();
     }
 
     public function preview_order(){

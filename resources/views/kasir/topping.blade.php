@@ -98,7 +98,6 @@
         </h2>
 
         <form action="{{ route('place-order'); }}" method="POST" id="form-order">
-          <input type="text" id="id_kasir" value="{{ $id_kasir }}">
           <input type="text" id="pemesan" value="{{ $pemesan }}">
           <input type="text" id="tipe_pemesanan" value="{{ $tipe_pemesanan }}">
           <input type="text" id="id_makanan" value="{{ $id }}">
@@ -291,7 +290,7 @@
         },
         type: "POST",
         url: actionUrl,
-        data: {id_kasir : {{ Session('id_kasir') }},pemesan : $('#pemesan').val(), tipe: $('#tipe_pemesanan').val(), id_makanan: $('#id_makanan').val(), topping: $('#topping').val()}, // serializes the form's elements.
+        data: {id_kasir : {{ Auth::user()->id }},pemesan : $('#pemesan').val(), tipe: $('#tipe_pemesanan').val(), id_makanan: $('#id_makanan').val(), topping: $('#topping').val()}, // serializes the form's elements.
         success: function(data)
         {
           alert(data); // show response from the php script.
