@@ -30,11 +30,21 @@
   <!-- responsive style -->
   <link href="/assets/frontend/css/responsive.css" rel="stylesheet" />
 
+
+  <!-- jQery -->
+  <script src="/assets/frontend/js/jquery-3.4.1.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <link rel="stylesheet" href="sweetalert2.min.css">
+
   <style>
 
     input[readonly] {
         background-color: white !important;
     }
+    ul { list-style-type: "»"; }
   </style>
 </head>
 
@@ -48,7 +58,7 @@
     <header class="header_section">
       <div class="container">
         <nav class="navbar navbar-expand-lg custom_nav-container ">
-          <a class="navbar-brand" href="index.html">
+          <a class="navbar-brand" href="{{ route('order') }}">
             <span>
               Bakso Simpang Tugu
             </span>
@@ -75,9 +85,9 @@
             </ul>
             <div class="user_option">
               <a href="" class="user_link">
-                <i class="fa fa-user" aria-hidden="true"></i>
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i><span class="badge">{{ $count_cart }}</span>
               </a>
-              <a href="" class="order_online">
+              <a href="{{ route('preview-order') }}" class="order_online">
                 Keluar
               </a>
             </div>
@@ -126,29 +136,34 @@
       </div>
 
       <div class="content">
-        <table class="table">
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th style="width: 100%;">Pesanan</th>
-                    <th>Aksi</th>
+                    <th colspan=2>Harga</th>
                 </tr>
             </thead>
             <tbody>
+              @foreach($cart as $key => $value)
                 <tr>
-                    <td>Bakso Urat<br>(Mie, Jamur, Sawi)</td>
-                    <td><a href="#" class="btn btn-danger btn-sm">Hapus</a></td>
+                    <td>{{ $value->nama." (".number_format($value->amount).")" }}<br>
+                      <ul>
+                        @foreach($value->topping as $key2=> $value2)
+                          <li>{{ $value2->nama." (".number_format($value2->amount).")" }}</li>
+                        @endforeach
+                      </ul>
+                    </td>
+                    <td>{{ number_format($value->price) }}</td>
+                    <td><a href="javascript:void(0)" data-id="{{ $value->id_detail_cart }}" class="btn btn-danger btn-sm delete">Hapus</a></td>
                 </tr>
-                
-                <tr>
-                    <td>Bakso Urat<br>(Mie, Jamur, Sawi)</td>
-                    <td><a href="#" class="btn btn-danger btn-sm">Hapus</a></td>
-                </tr>
-
-                <tr>
-                    <td>Bakso Urat<br>(Mie, Jamur, Sawi)</td>
-                    <td><a href="#" class="btn btn-danger btn-sm">Hapus</a></td>
-                </tr>
+              @endforeach
             </tbody>
+            <tfoot>
+              <tr>
+                <th>Total</th>
+                <th colspan=2>Rp. {{ number_format($total_price) }}</th>
+              </tr>
+            </tfoot>
         </table>
 
         <div class="row mt-4" style="float: right;">
@@ -246,8 +261,6 @@
   </footer>
   <!-- footer section -->
 
-  <!-- jQery -->
-  <script src="/assets/frontend/js/jquery-3.4.1.min.js"></script>
   <!-- popper js -->
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
   </script>
@@ -264,25 +277,60 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
   </script>
   <!-- End Google Map -->
+  
 
   <script>
-    $('.open-topping').on('click', function(){
-     var id_kasir = $('#kasir').attr('data-id');
-     var namaPemesan = $('input[name="pemesan"]').val();
-     var tipePesanan = $('select[name="tipe_pemesanan"]').val();
-     var namaMakanan = $(this).data('nama');
-     var hargaMakanan = $(this).data('harga'); 
-     var idMakanan = $(this).data('id');
-     if(namaPemesan == '' || tipePesanan == ''){
-      alert('harap mengisi data pemesanan')
-      return false;
-     }
-    //  console.log("/"+id_kasir+'/'+namaPemesan+'/'+tipePesanan+'/'+namaMakanan+'/'+idMakanan+'/'+hargaMakanan)
-     window.location.href = "http://localhost:8000/order/"+id_kasir+'/'+namaPemesan+'/'+tipePesanan+'/'+namaMakanan+'/'+hargaMakanan+'/'+idMakanan;
-      // alert(tipePesanan);
-      
 
-    });
+    $('.delete').click(function(){
+      var id = $(this).attr('data-id');
+      var actionUrl = "{{route('delete-order') }}";
+      var $deletebtn = $(this);
+      // alert();
+      // return false;
+
+Swal.fire({
+  title: 'Hapus pesanan?',
+  showDenyButton: true,
+  // showCancelButton: true,
+  confirmButtonText: 'Hapus',
+  denyButtonText: `Batal`,
+}).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
+  if (result.isConfirmed) {
+      $.ajax({
+        headers: {
+            'X-CSRF-TOKEN':'{{ csrf_token() }}'
+        },
+        type: "POST",
+        dataType: "JSON",
+        url: actionUrl,
+        data: {id_detail: id}, // serializes the form's elements.
+        success: function(e)
+        {
+          // alert(data);
+
+          if(e.status == 200){
+            Swal.fire({
+              icon: 'success',
+              title: 'Sukses',
+              text: e.msg
+            }).then(()=>{
+              location.reload();
+            });
+          }else{
+            Swal.fire({
+              icon: 'error',
+              title: 'Sukses',
+              text: e.msg
+            });
+          }
+          
+        }
+      });
+  } 
+})
+      // alert(id);
+    })
   </script>
 
 </body>
