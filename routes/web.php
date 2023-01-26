@@ -32,10 +32,11 @@ All Kasir Routes List
 --------------------------------------------*/
 Route::middleware(['auth', 'user-access:1'])->group(function () { //kasir
     Route::get('order', [KasirController::class, 'order'])->name('order');
-    Route::get('order/{pemesan}/{tipe_pemesanan}/{makanan}/{id}/{harga}', [KasirController::class, 'topping'])->name('order-topping');
+    Route::get('order/{makanan}/{id}/{harga}', [KasirController::class, 'topping'])->name('order-topping');
     Route::post('order/place_order', [KasirController::class,'place_order'])->name('place-order');
-
+    Route::post('order/delete_order', [KasirController::class,'delete_order'])->name('delete-order');
     Route::get('order/preview-order', [KasirController::class,'preview_order'])->name('preview-order');
+    Route::get('order/submit-order', [KasirController::class, 'submit_order'])->name('submit-order');
 });
 
 /*------------------------------------------

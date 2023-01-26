@@ -48,7 +48,7 @@
     <header class="header_section">
       <div class="container">
         <nav class="navbar navbar-expand-lg custom_nav-container ">
-          <a class="navbar-brand" href="index.html">
+          <a class="navbar-brand" href="{{ route('order') }}">
             <span>
               Bakso Simpang Tugu
             </span>
@@ -74,8 +74,8 @@
               </li> -->
             </ul>
             <div class="user_option">
-              <a href="" class="user_link">
-                <i class="fa fa-user" aria-hidden="true"></i>
+              <a href="{{ route('preview-order') }}" class="user_link">
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i><span class="badge">{{ $count_cart }}</span>
               </a>
               <a href="" class="order_online">
                 Keluar
@@ -92,7 +92,7 @@
 
   <section class="food_section layout_padding">
     <div class="container">
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-md-6">
             <div class="from-group p-2">
                 <label for="username">Kasir</label>
@@ -117,7 +117,7 @@
                 </select>
             </div>
         </div>
-    </div>
+    </div> -->
 
       <div class="heading_container heading_center">
         <h2>
@@ -152,7 +152,7 @@
                     <h6>
                       Rp. {{ number_format($value->amount) }}
                     </h6>
-                    <a href="javascript:void(0)" class="open-topping" data-nama="Bakso Tulang Rungu" data-harga="10000" data-id="{{ $key }}">
+                    <a href="javascript:void(0)" class="open-topping" data-nama="{{ $value->nama }}" data-harga="{{ $value->amount }}" data-id="{{ $value->id }}">
                       <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
                         <g>
                           <g>
@@ -402,18 +402,18 @@
 
   <script>
     $('.open-topping').on('click', function(){
-     var id_kasir = $('#kasir').attr('data-id');
-     var namaPemesan = $('input[name="pemesan"]').val();
-     var tipePesanan = $('select[name="tipe_pemesanan"]').val();
+    //  var id_kasir = $('#kasir').attr('data-id');
+    //  var namaPemesan = $('input[name="pemesan"]').val();
+    //  var tipePesanan = $('select[name="tipe_pemesanan"]').val();
      var namaMakanan = $(this).data('nama');
      var hargaMakanan = $(this).data('harga'); 
      var idMakanan = $(this).data('id');
-     if(namaPemesan == '' || tipePesanan == ''){
-      alert('harap mengisi data pemesanan')
-      return false;
-     }
+    //  if(namaPemesan == '' || tipePesanan == ''){
+    //   alert('harap mengisi data pemesanan')
+    //   return false;
+    //  }
     //  console.log("/"+id_kasir+'/'+namaPemesan+'/'+tipePesanan+'/'+namaMakanan+'/'+idMakanan+'/'+hargaMakanan)
-     window.location.href = "http://localhost:8000/order/"+namaPemesan+'/'+tipePesanan+'/'+namaMakanan+'/'+hargaMakanan+'/'+idMakanan;
+     window.location.href = "http://localhost:8000/order/"+namaMakanan+'/'+hargaMakanan+'/'+idMakanan;
       // alert(tipePesanan);
       
 

@@ -27,6 +27,7 @@
 
   <!-- Custom styles for this template -->
   <link href="/assets/frontend/css/style.css" rel="stylesheet" />
+  
   <!-- responsive style -->
   <link href="/assets/frontend/css/responsive.css" rel="stylesheet" />
 
@@ -36,6 +37,16 @@
         background-color: white !important;
     }
   </style>
+
+
+  <!-- jQery -->
+  <script src="/assets/frontend/js/jquery-3.4.1.min.js"></script>
+  <!-- <script src="sweetalert2.all.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <link rel="stylesheet" href="sweetalert2.min.css">
+
+
 </head>
 
 <body class="sub_page">
@@ -48,7 +59,7 @@
     <header class="header_section">
       <div class="container">
         <nav class="navbar navbar-expand-lg custom_nav-container ">
-          <a class="navbar-brand" href="index.html">
+          <a class="navbar-brand" href="{{ route('order') }}">
             <span>
               Bakso Simpang Tugu
             </span>
@@ -74,8 +85,8 @@
               </li> -->
             </ul>
             <div class="user_option">
-              <a href="" class="user_link">
-                <i class="fa fa-user" aria-hidden="true"></i>
+              <a href="{{ route('place-order') }}" class="user_link">
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i><span class="badge">{{ $count_cart }}</span>
               </a>
               <a href="" class="order_online">
                 Keluar
@@ -98,11 +109,9 @@
         </h2>
 
         <form action="{{ route('place-order'); }}" method="POST" id="form-order">
-          <input type="text" id="pemesan" value="{{ $pemesan }}">
-          <input type="text" id="tipe_pemesanan" value="{{ $tipe_pemesanan }}">
-          <input type="text" id="id_makanan" value="{{ $id }}">
-          <input type="text" id="harga" value="{{ $harga }}">
-          <input type="text" id="topping" value="">
+          <input type="hidden" id="id_makanan" value="{{ $id }}">
+          <input type="hidden" id="harga" value="{{ $harga }}">
+          <input type="hidden" id="topping" value="">
         </form>
       </div>
 
@@ -113,7 +122,7 @@
       <div class="filters-content">
         <div class="row grid">
 
-        @for ($i = 1; $i <= 5; $i++)
+        @foreach($topping as $key => $value)
           <div class="col-sm-6 col-lg-4 all bakso">
             <div class="box">
               <div>
@@ -122,14 +131,14 @@
                 </div>
                 <div class="detail-box">
                   <h5>
-                    Topping {{ $i }}
+                    {{ $value->nama }}
                   </h5>
                   
                   <div class="options">
                     <h6>
-                      Rp. 10.000
+                      Rp. {{ number_format($value->amount) }}
                     </h6>
-                    <a href="javascript:void(0)" class="choose-topping" data-choosen="false" data-id="{{ $i }}">
+                    <a href="javascript:void(0)" class="choose-topping" data-choosen="false" data-id="{{ $value->id }}">
                       <i class="fa fa-shopping-cart" style="color:white;"></i>
                     </a>
                   </div>
@@ -137,7 +146,7 @@
               </div>
             </div>
           </div>
-        @endfor
+        @endforeach
         
         </div>
         <div class="row mt-4" style="float: right;">
@@ -234,9 +243,6 @@
     </div>
   </footer>
   <!-- footer section -->
-
-  <!-- jQery -->
-  <script src="/assets/frontend/js/jquery-3.4.1.min.js"></script>
   <!-- popper js -->
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
   </script>
@@ -293,7 +299,22 @@
         data: {id_kasir : {{ Auth::user()->id }},pemesan : $('#pemesan').val(), tipe: $('#tipe_pemesanan').val(), id_makanan: $('#id_makanan').val(), topping: $('#topping').val()}, // serializes the form's elements.
         success: function(data)
         {
-          alert(data); // show response from the php script.
+          // alert(data); // show response from the php script.
+          Swal.fire({
+            title: 'Sukses',
+            showDenyButton: true,
+            // showCancelButton: true,
+            confirmButtonText: 'Lanjut Bayar',
+            denyButtonText: 'Pesan Lagi',
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              // Swal.fire('Saved!', '', 'success')
+              window.location.href = "http://localhost:8000/order/preview-order";
+            } else if (result.isDenied) {
+              window.location.href = "http://localhost:8000/order";
+            }
+          })
         }
     });
     });
