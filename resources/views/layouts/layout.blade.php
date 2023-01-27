@@ -171,13 +171,13 @@
                   </a>
                 </li> -->
                 <li class="menu-item @if(isset($menu)) @if($menu=='Laporan') active @endif @endif">
-                  <a href="{{ route('menu') }}" class="menu-link">
+                  <a href="{{ route('topping') }}" class="menu-link">
                     <div data-i18n="Laporan">Topping</div>
                   </a>
                 </li>
                 <li class="menu-item @if(isset($menu)) @if($menu=='Absensi') active @endif @endif">
-                  <a href="{{ route('menu') }}" class="menu-link">
-                    <div data-i18n="Absensi">Minuman</div>
+                  <a href="{{ route('minuman') }}" class="menu-link">
+                    <div data-i18n="Minuman">Minuman</div>
                   </a>
                 </li>
               </ul>
@@ -255,7 +255,7 @@
                   <div class="card">
                     <div class="d-flex align-items-end row">
                         <div class="card-body">
-                          <h5 class="card-title text-primary">Menu</h5>
+                          <h5 class="card-title text-primary"></h5>
                           
                       </div>
                       <div class="text-center text-sm-left">

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('stock')->nullable();
             $table->string('image')->nullable();
             $table->enum('kategori', ['Makanan', 'Minuman','Topping']);
-            $table->string('is_active')->default(0);
+            $table->string('is_active')->default('No');
             $table->timestamps();
         });
     }

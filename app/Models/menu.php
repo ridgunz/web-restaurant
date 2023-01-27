@@ -13,7 +13,7 @@ class menu extends Model
         'id',
         'nama',
         'deskripsi',
-        'harga',
+        'amount',
         'stock',
         'image',
         'kategori',
