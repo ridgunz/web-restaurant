@@ -71,6 +71,12 @@
                                     <h2>Laporan</h2>
                                 </a>
                                 </div>
+                                <div class="column">
+                                <a href="{{ route('topping') }}">
+                                    <img src="{{url('/images/akun.png')}}" style="width:140px;height:120px">
+                                    <h2>Manage Akun</h2>
+                                </a>
+                                </div>
                             </div>
                         @endif
                     @endif
