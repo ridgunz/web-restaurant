@@ -102,32 +102,35 @@
 
   <section class="food_section layout_padding">
     <div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="from-group p-2">
-                <label for="username">Kasir</label>
-                <input type="text" class="form-control" id="kasir" placeholder="Username" aria-label="Username" value="Dikmars" data-id="1" readonly>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="from-group p-2">
-                <label for="username">Pemesan</label>
-                <input type="text" class="form-control" placeholder="Nama Pemesan / No Meja" name="pemesan" aria-label="pemesan" >
-            </div>
-        </div>
+    <form action="http://localhost:8000/order/submit-order" method="POST">
+        <div class="row">
+          <div class="col-md-6">
+              <div class="from-group p-2">
+                  <label for="username">Kasir</label>
+                  <input type="text" class="form-control" id="kasir" placeholder="Username" aria-label="Username" value="Dikmars"  readonly>
+              </div>
+          </div>
+          <div class="col-md-6">
+              <div class="from-group p-2">
+                  <label for="username">Pemesan</label>
+                  <input type="text" class="form-control" placeholder="Nama Pemesan / No Meja" name="pemesan" aria-label="pemesan" >
+              </div>
+          </div>
 
 
-        <div class="col-md-6">
-            <div class="from-group p-2">
-                <label for="username">Tipe Pemesanan</label><br>
-                <select class="form-control" name="tipe_pemesanan" required>
-                    <option value="">-- Pilih --</option>
-                    <option value="1">Bungkus</option>
-                    <option value="2">Makan ditempat</option>
-                </select>
-            </div>
+          <div class="col-md-6">
+              <div class="from-group p-2">
+                  <label for="username">Tipe Pemesanan</label><br>
+                  <select class="form-control" name="tipe_pemesanan" required>
+                      <option value="">-- Pilih --</option>
+                      <option value="1">Bungkus</option>
+                      <option value="2">Makan ditempat</option>
+                  </select>
+              </div>
+          </div>
         </div>
-    </div>
+
+      </form>
 
       <div class="heading_container heading_center">
         <h2>
@@ -168,8 +171,8 @@
 
         <div class="row mt-4" style="float: right;">
           <div>
-            <a href="javascript:void(0)" id="back" class="btn btn-primary">Pilih Menu</a>
-            <a href="javascript:void(0)" id="order" class="btn btn-success">Pesan</a>
+            <a href="{{route('order')}}"  class="btn btn-primary">Pilih Menu</a>
+            @if(count($cart) > 0)<a href="javascript:void(0)" id="order" class="btn btn-success">Pesan</a>@endif
           </div>
         </div>
       </div>
@@ -281,56 +284,114 @@
 
   <script>
 
+    $('#order').click(function(){
+
+     var namaPemesan = $('input[name="pemesan"]').val();
+     var tipePesanan = $('select[name="tipe_pemesanan"]').val();
+      if(namaPemesan == ''){
+        Swal.fire({
+          title: 'Harap mengisi nama pemesan',
+          // text: 'Do you want to continue',
+          icon: 'warning',
+          confirmButtonText: 'Ok'
+        });
+
+        return false;
+      }
+
+      if(tipePesanan == ''){
+        Swal.fire({
+          title: 'Harap mengisi memilih tipe pemesanan',
+          // text: 'Do you want to continue',
+          icon: 'warning',
+          confirmButtonText: 'Ok'
+        });
+
+        return false;
+      }
+      // alert($('input[name="pemesan"]').val());
+      // return false;
+
+      var form = $('form');
+      var actionUrl = form.attr('action');
+
+      
+      Swal.fire({ 
+      title: 'Konfirmasi pesanan?',
+      showDenyButton: true,
+      // showCancelButton: true,
+      confirmButtonText: 'Pesan',
+      denyButtonText: `Batal`,
+    }).then((result) => {
+
+    if (result.isConfirmed) {
+        $.ajax({
+          headers: {
+              'X-CSRF-TOKEN':'{{ csrf_token() }}'
+          },
+          type: "POST",
+          url: actionUrl,
+          dataType: 'JSON',
+          data: {namaPemesan: namaPemesan, tipePesanan: tipePesanan}, // serializes the form's elements.
+          success: function(data)
+          {
+            console.log(data.msg)
+            Swal.fire({
+              icon: 'success',
+              title: data.msg,
+            }).then(()=>{
+            window.location.href = "http://localhost:8000/order";
+            });
+            
+          }
+        });
+      }
+      });
+    });
+
     $('.delete').click(function(){
       var id = $(this).attr('data-id');
       var actionUrl = "{{route('delete-order') }}";
       var $deletebtn = $(this);
-      // alert();
-      // return false;
-
-Swal.fire({
-  title: 'Hapus pesanan?',
-  showDenyButton: true,
-  // showCancelButton: true,
-  confirmButtonText: 'Hapus',
-  denyButtonText: `Batal`,
-}).then((result) => {
-  /* Read more about isConfirmed, isDenied below */
-  if (result.isConfirmed) {
-      $.ajax({
-        headers: {
-            'X-CSRF-TOKEN':'{{ csrf_token() }}'
-        },
-        type: "POST",
-        dataType: "JSON",
-        url: actionUrl,
-        data: {id_detail: id}, // serializes the form's elements.
-        success: function(e)
-        {
-          // alert(data);
-
-          if(e.status == 200){
-            Swal.fire({
-              icon: 'success',
-              title: 'Sukses',
-              text: e.msg
-            }).then(()=>{
-              location.reload();
+    Swal.fire({
+      title: 'Hapus pesanan?',
+      showDenyButton: true,
+      // showCancelButton: true,
+      confirmButtonText: 'Hapus',
+      denyButtonText: `Batal`,
+    }).then((result) => {
+    if (result.isConfirmed) {
+        $.ajax({
+          headers: {
+              'X-CSRF-TOKEN':'{{ csrf_token() }}'
+          },
+          type: "POST",
+          dataType: "JSON",
+          url: actionUrl,
+          data: {id_detail: id}, 
+          success: function(e)
+          {
+                if(e.status == 200){
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Sukses',
+                    text: e.msg
+                  }).then(()=>{
+                    location.reload();
+                  });
+                }else{
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Sukses',
+                    text: e.msg
+                  });
+                } 
+              }
             });
-          }else{
-            Swal.fire({
-              icon: 'error',
-              title: 'Sukses',
-              text: e.msg
-            });
-          }
-          
-        }
-      });
-  } 
-})
-      // alert(id);
-    })
+          } 
+        });
+        // alert(id);
+      })
   </script>
 
 </body>

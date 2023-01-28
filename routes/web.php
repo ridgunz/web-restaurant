@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\KasirController;
+use App\Http\Controllers\DapurController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +37,17 @@ Route::middleware(['auth', 'user-access:1'])->group(function () { //kasir
     Route::post('order/place_order', [KasirController::class,'place_order'])->name('place-order');
     Route::post('order/delete_order', [KasirController::class,'delete_order'])->name('delete-order');
     Route::get('order/preview-order', [KasirController::class,'preview_order'])->name('preview-order');
-    Route::get('order/submit-order', [KasirController::class, 'submit_order'])->name('submit-order');
+    Route::post('order/submit-order', [KasirController::class, 'submit_order'])->name('submit-order');
+
+    Route::get('order/list-order', [KasirController::class,'list_order'])->name('list-order');
+
+    Route::get('order/payment-order/{id}', [KasirController::class,'payment_order'])->name('payment-order');
+    Route::post('order/complete-order', [KasirController::class,'complete_order'])->name('complete-order');
+    Route::get('order/add-order/{id}', [KasirController::class,'add_order'])->name('add-order');
+    Route::get('order/add-order/{id}/{makanan}/{harga}/{id_makanan}', [KasirController::class,'add_order_topping'])->name('add-topping');
+    
+    Route::post('order/delete-order-add', [KasirController::class,'delete_order_add'])->name('delete-order-add');
+    Route::post('order/submit-order-add', [KasirController::class, 'submit_order_add'])->name('submit-order-add');
 });
 
 /*------------------------------------------
@@ -45,8 +56,10 @@ All Dapur Routes List
 --------------------------------------------
 --------------------------------------------*/
 Route::middleware(['auth', 'user-access:2'])->group(function () { //dapur
-  
-
+    Route::get('dapur', [DapurController::class, 'index'])->name('dapur');
+    Route::get('dapur/detail/{id}', [DapurController::class, 'detail'])->name('dapur-detail');
+    Route::post('dapur/update-order', [DapurController::class, 'update_flag_order'])->name('update-flag-order');
+    Route::post('dapur/update-pesanan', [DapurController::class, 'update_flag_order_detail'])->name('update-flag-detail');
 });
   
 /*------------------------------------------

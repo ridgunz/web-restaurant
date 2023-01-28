@@ -21,32 +21,31 @@
   <!--owl slider stylesheet -->
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
   <!-- nice select  -->
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" /> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
   <!-- font awesome style -->
   <link href="/assets/frontend/css/font-awesome.min.css" rel="stylesheet" />
 
   <!-- Custom styles for this template -->
   <link href="/assets/frontend/css/style.css" rel="stylesheet" />
-  
   <!-- responsive style -->
   <link href="/assets/frontend/css/responsive.css" rel="stylesheet" />
+
+
+  <!-- jQery -->
+  <script src="/assets/frontend/js/jquery-3.4.1.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <link rel="stylesheet" href="sweetalert2.min.css">
 
   <style>
 
     input[readonly] {
         background-color: white !important;
     }
+    ul { list-style-type: "»"; }
   </style>
-
-
-  <!-- jQery -->
-  <script src="/assets/frontend/js/jquery-3.4.1.min.js"></script>
-  <!-- <script src="sweetalert2.all.min.js"></script> -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-  <link rel="stylesheet" href="sweetalert2.min.css">
-
-
 </head>
 
 <body class="sub_page">
@@ -85,10 +84,10 @@
               </li> -->
             </ul>
             <div class="user_option">
-              <a href="{{ route('place-order') }}" class="user_link">
+              <a href="" class="user_link">
                 <i class="fa fa-shopping-cart" aria-hidden="true"></i><span class="badge">{{ $count_cart }}</span>
               </a>
-              <a href="" class="order_online">
+              <a href="{{ route('preview-order') }}" class="order_online">
                 Keluar
               </a>
             </div>
@@ -103,56 +102,83 @@
 
   <section class="food_section layout_padding">
     <div class="container">
+    <form action="http://localhost:8000/order/complete-order" method="POST">
+        <div class="row">
+          <div class="col-md-6">
+              <div class="from-group p-2">
+                  <label for="username">Kasir</label>
+                  <input type="text" class="form-control" id="kasir" placeholder="Username" aria-label="Username" value="Dikmars"  readonly>
+              </div>
+          </div>
+          <div class="col-md-6">
+              <div class="from-group p-2">
+                  <label for="username">Pemesan</label>
+                  <input type="text" class="form-control" placeholder="Nama Pemesan / No Meja" name="nama_pemesan" value="{{$order->nama_pemesan}}" aria-label="pemesan" readonly>
+              </div>
+          </div>
+
+
+          <div class="col-md-6">
+              <div class="from-group p-2">
+                  <label for="username">Tipe Pemesanan</label><br>
+                  <input type="text" class="form-control" placeholder="tipe order" name="tipe_order" value="{{$order->tipe_order == 1? 'Makan Ditempat': 'Bungkus'}}" aria-label="tipe" readonly>
+              </div>
+          </div>
+          <div class="col-md-6">
+              <div class="from-group p-2">
+                  <label for="username">Tipe Pembayaran</label><br>
+                  <select name="tipe_pembayaran" id="tipe-pembayaran" class="form-control">
+                    <option value="">-- Pilih tipe Pembayaran -- </option>
+                    <option value="Cash">Cash</option>
+                    <option value="Non-Cash">Non-Cash</option>
+                  </select>
+              </div>
+          </div>
+        </div>
+
+      </form>
+
       <div class="heading_container heading_center">
         <h2>
-          Topping {{ $nama_makanan }}
+          Pesanan
         </h2>
-
-        <form action="{{ route('place-order'); }}" method="POST" id="form-order">
-          <input type="hidden" id="id_makanan" value="{{ $id }}">
-          <input type="hidden" id="harga" value="{{ $harga }}">
-          <input type="hidden" id="topping" value="">
-        </form>
       </div>
 
-      <ul class="filters_menu">
-        <li class="active" data-filter="*">Topping</li>
-      </ul>
+      <div class="content">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th style="width: 100%;">Pesanan</th>
+                    <th colspan=2>Harga</th>
+                </tr>
+            </thead>
+            <tbody>
+              @foreach($order->detail as $key => $value)
+                <tr>
+                    <td>{{ $value->nama." (".number_format($value->amount).")" }}<br>
+                      <ul>
+                        @foreach($value->topping as $key2=> $value2)
+                          <li>{{ $value2->nama." (".number_format($value2->amount).")" }}</li>
+                        @endforeach
+                      </ul>
+                    </td>
+                    <td>{{ number_format($value->price) }}</td>
+                    <td><a href="javascript:void(0)" data-id="{{ $value->id_detail_cart }}" class="btn btn-danger btn-sm delete">Hapus</a></td>
+                </tr>
+              @endforeach
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>Total</th>
+                <th colspan=2>Rp. {{ number_format($total_price) }}</th>
+              </tr>
+            </tfoot>
+        </table>
 
-      <div class="filters-content">
-        <div class="row grid">
-
-        @foreach($topping as $key => $value)
-          <div class="col-sm-6 col-lg-4 all bakso">
-            <div class="box">
-              <div>
-                <div class="img-box m-0 p-0" style="height:auto;">
-                  <img src="https://akcdn.detik.net.id/community/media/visual/2019/08/12/dca21bf3-923c-486f-bc2e-a3dcd759b1df.jpeg" style="width: 100%; height: auto; object-fit: cover;" alt="">
-                </div>
-                <div class="detail-box">
-                  <h5>
-                    {{ $value->nama }}
-                  </h5>
-                  
-                  <div class="options">
-                    <h6>
-                      Rp. {{ number_format($value->amount) }}
-                    </h6>
-                    <a href="javascript:void(0)" class="choose-topping" data-choosen="false" data-id="{{ $value->id }}">
-                      <i class="fa fa-shopping-cart" style="color:white;"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        @endforeach
-        
-        </div>
         <div class="row mt-4" style="float: right;">
           <div>
-            <a href="javascript:void(0)" id="back" class="btn btn-danger">Batal</a>
-            <a href="javascript:void(0)" id="order" class="btn btn-primary">Pesan Pesanan</a>
+            <a href="{{route('add-order',['id'=>$id])}}"  class="btn btn-primary">Pilih Menu</a>
+            @if(count($order->detail) > 0)<a href="javascript:void(0)" id="order" class="btn btn-success">Selesaikan Pesanan</a>@endif
           </div>
         </div>
       </div>
@@ -243,6 +269,7 @@
     </div>
   </footer>
   <!-- footer section -->
+
   <!-- popper js -->
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
   </script>
@@ -259,65 +286,108 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
   </script>
   <!-- End Google Map -->
+  
 
   <script>
-    const choosenTopping = [];
-    $('.choose-topping').click(function(){
-        var choosen = $(this).attr('data-choosen');
-        var idChoosen = $(this).attr('data-id');
-        if(choosen == 'true'){
-            choosen = 'false';
-            $(this).html('<i class="fa fa-shopping-cart" style="color:white;"></i>');
-            $(this).css('background-color', '#ffbe33');
-            choosenTopping.splice( $.inArray(idChoosen, choosenTopping), 1 );
-        }else{
-            choosen = 'true';
-            $(this).html('<i class="fa fa-check" style="color:white;"></i>');
-            $(this).css('background-color', '#39aad7');
-            choosenTopping.push(idChoosen);
-        }
-        $(this).attr('data-choosen', choosen);
-        $('#topping').val(JSON.stringify(choosenTopping));
-    });
-
-    $('#back').click(function(){
-      window.history.back();
-    });
 
     $('#order').click(function(){
-      // $('#form-order').submit();
 
-      var form = $('#form-order');
+     var tipePembayaran = $('select[name="tipe_pembayaran"]').val();
+      
+
+      if(tipePembayaran == ''){
+        Swal.fire({
+          title: 'Harap mengisi memilih tipe pembayaran',
+          // text: 'Do you want to continue',
+          icon: 'warning',
+          confirmButtonText: 'Ok'
+        });
+
+        return false;
+      }
+      // alert($('input[name="pemesan"]').val());
+      // return false;
+
+      var form = $('form');
       var actionUrl = form.attr('action');
 
-      $.ajax({
-        headers: {
-            'X-CSRF-TOKEN':'{{ csrf_token() }}'
-        },
-        type: "POST",
-        url: actionUrl,
-        data: {id_kasir : {{ Auth::user()->id }},pemesan : $('#pemesan').val(), tipe: $('#tipe_pemesanan').val(), id_makanan: $('#id_makanan').val(), topping: $('#topping').val()}, // serializes the form's elements.
-        success: function(data)
-        {
-          // alert(data); // show response from the php script.
-          Swal.fire({
-            title: 'Sukses',
-            showDenyButton: true,
-            // showCancelButton: true,
-            confirmButtonText: 'Lanjut Bayar',
-            denyButtonText: 'Pesan Lagi',
-          }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-              // Swal.fire('Saved!', '', 'success')
-              window.location.href = "http://localhost:8000/order/preview-order";
-            } else if (result.isDenied) {
-              window.location.href = "http://localhost:8000/order";
+      
+      Swal.fire({ 
+      title: 'Selesaikan pesanan?',
+      showDenyButton: true,
+      // showCancelButton: true,
+      confirmButtonText: 'Ya',
+      denyButtonText: `Batal`,
+    }).then((result) => {
+
+    if (result.isConfirmed) {
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN':'{{ csrf_token() }}'
+            },
+            type: "POST",
+            url: actionUrl,
+            dataType: 'JSON',
+            data: {tipePembayaran: tipePembayaran, id: {{$order->id}}, total: {{$total_price}}}, // serializes the form's elements.
+            success: function(data)
+            {
+            console.log(data.msg)
+            Swal.fire({
+                icon: 'success',
+                title: data.msg,
+            }).then(()=>{
+            window.location.href = "http://localhost:8000/order/list-order";
+            });
+            
             }
-          })
+        });
         }
       });
     });
+
+    $('.delete').click(function(){
+      var id = $(this).attr('data-id');
+      var actionUrl = "{{route('delete-order-add') }}";
+      var $deletebtn = $(this);
+    Swal.fire({
+      title: 'Hapus pesanan?',
+      showDenyButton: true,
+      // showCancelButton: true,
+      confirmButtonText: 'Hapus',
+      denyButtonText: `Batal`,
+    }).then((result) => {
+    if (result.isConfirmed) {
+        $.ajax({
+          headers: {
+              'X-CSRF-TOKEN':'{{ csrf_token() }}'
+          },
+          type: "POST",
+          dataType: "JSON",
+          url: actionUrl,
+          data: {id_detail: id}, 
+          success: function(e)
+          {
+                if(e.status == 200){
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Sukses',
+                    text: e.msg
+                  }).then(()=>{
+                    location.reload();
+                  });
+                }else{
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Sukses',
+                    text: e.msg
+                  });
+                } 
+              }
+            });
+          } 
+        });
+        // alert(id);
+      })
   </script>
 
 </body>

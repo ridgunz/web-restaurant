@@ -21,32 +21,31 @@
   <!--owl slider stylesheet -->
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
   <!-- nice select  -->
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" /> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
   <!-- font awesome style -->
   <link href="/assets/frontend/css/font-awesome.min.css" rel="stylesheet" />
 
   <!-- Custom styles for this template -->
   <link href="/assets/frontend/css/style.css" rel="stylesheet" />
-  
   <!-- responsive style -->
   <link href="/assets/frontend/css/responsive.css" rel="stylesheet" />
+
+
+  <!-- jQery -->
+  <script src="/assets/frontend/js/jquery-3.4.1.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <link rel="stylesheet" href="sweetalert2.min.css">
 
   <style>
 
     input[readonly] {
         background-color: white !important;
     }
+    ul { list-style-type: "»"; }
   </style>
-
-
-  <!-- jQery -->
-  <script src="/assets/frontend/js/jquery-3.4.1.min.js"></script>
-  <!-- <script src="sweetalert2.all.min.js"></script> -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-  <link rel="stylesheet" href="sweetalert2.min.css">
-
-
 </head>
 
 <body class="sub_page">
@@ -85,10 +84,7 @@
               </li> -->
             </ul>
             <div class="user_option">
-              <a href="{{ route('place-order') }}" class="user_link">
-                <i class="fa fa-shopping-cart" aria-hidden="true"></i><span class="badge">{{ $count_cart }}</span>
-              </a>
-              <a href="" class="order_online">
+              <a href="{{ route('preview-order') }}" class="order_online">
                 Keluar
               </a>
             </div>
@@ -105,56 +101,33 @@
     <div class="container">
       <div class="heading_container heading_center">
         <h2>
-          Topping {{ $nama_makanan }}
+          Pemesan
         </h2>
-
-        <form action="{{ route('place-order'); }}" method="POST" id="form-order">
-          <input type="hidden" id="id_makanan" value="{{ $id }}">
-          <input type="hidden" id="harga" value="{{ $harga }}">
-          <input type="hidden" id="topping" value="">
-        </form>
       </div>
 
-      <ul class="filters_menu">
-        <li class="active" data-filter="*">Topping</li>
-      </ul>
-
-      <div class="filters-content">
-        <div class="row grid">
-
-        @foreach($topping as $key => $value)
-          <div class="col-sm-6 col-lg-4 all bakso">
-            <div class="box">
-              <div>
-                <div class="img-box m-0 p-0" style="height:auto;">
-                  <img src="https://akcdn.detik.net.id/community/media/visual/2019/08/12/dca21bf3-923c-486f-bc2e-a3dcd759b1df.jpeg" style="width: 100%; height: auto; object-fit: cover;" alt="">
-                </div>
-                <div class="detail-box">
-                  <h5>
-                    {{ $value->nama }}
-                  </h5>
-                  
-                  <div class="options">
-                    <h6>
-                      Rp. {{ number_format($value->amount) }}
-                    </h6>
-                    <a href="javascript:void(0)" class="choose-topping" data-choosen="false" data-id="{{ $value->id }}">
-                      <i class="fa fa-shopping-cart" style="color:white;"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        @endforeach
-        
-        </div>
-        <div class="row mt-4" style="float: right;">
-          <div>
-            <a href="javascript:void(0)" id="back" class="btn btn-danger">Batal</a>
-            <a href="javascript:void(0)" id="order" class="btn btn-primary">Pesan Pesanan</a>
-          </div>
-        </div>
+      <div class="content">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th style="width: 80%;">Pemesan</th>
+                    <th style="width: 20%;">Topping</th>
+                </tr>
+            </thead>
+            <tbody>
+              @foreach($order as $key => $value)
+                <tr class="clickable-row" data-flag="0" data-id="{{$value->id}}" data-idorder='{{ $value->order_id }}'>
+                    <td>{{ $value->nama }}</td>
+                    <td>
+                        <ul style="padding-left: 10px;">
+                            @foreach($value->topping as $value2)
+                                <li>{{ $value2->nama }}</li>   
+                            @endforeach
+                        </ul>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
       </div>
     </div>
   </section>
@@ -243,6 +216,7 @@
     </div>
   </footer>
   <!-- footer section -->
+
   <!-- popper js -->
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
   </script>
@@ -259,65 +233,96 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
   </script>
   <!-- End Google Map -->
+  
 
   <script>
-    const choosenTopping = [];
-    $('.choose-topping').click(function(){
-        var choosen = $(this).attr('data-choosen');
-        var idChoosen = $(this).attr('data-id');
-        if(choosen == 'true'){
-            choosen = 'false';
-            $(this).html('<i class="fa fa-shopping-cart" style="color:white;"></i>');
-            $(this).css('background-color', '#ffbe33');
-            choosenTopping.splice( $.inArray(idChoosen, choosenTopping), 1 );
+    
+jQuery(document).ready(function($) {
+    var jumlah_done = 0;
+    var jumlah_pesanan = $('.clickable-row').length;
+    $(".clickable-row").click(function() {
+        var flag = $(this).attr('data-flag');
+        if(flag == 0){
+            $(this).addClass('table-success');
+            $(this).attr('data-flag', 1);
+            jumlah_done += 1;
         }else{
-            choosen = 'true';
-            $(this).html('<i class="fa fa-check" style="color:white;"></i>');
-            $(this).css('background-color', '#39aad7');
-            choosenTopping.push(idChoosen);
+            $(this).removeClass('table-success');
+            $(this).attr('data-flag', 0);
+            jumlah_done -=1;
         }
-        $(this).attr('data-choosen', choosen);
-        $('#topping').val(JSON.stringify(choosenTopping));
-    });
 
-    $('#back').click(function(){
-      window.history.back();
-    });
+        var curr_flag = $(this).attr('data-flag');
+        var id = $(this).attr('data-id');
 
-    $('#order').click(function(){
-      // $('#form-order').submit();
+        var url = 'http://localhost:8000/dapur/update-pesanan';
 
-      var form = $('#form-order');
-      var actionUrl = form.attr('action');
+        $.ajax({
+          headers: {
+              'X-CSRF-TOKEN':'{{ csrf_token() }}'
+          },
+          type: "POST",
+          dataType: "JSON",
+          url: url,
+          data: {id: id, flag: curr_flag}, 
+          success: function(e)
+          {
+                if(e.status == 200){
+                    Swal.fire({
+                    icon: 'success',
+                    title: 'Sukses',
+                    text: e.msg
+                    }).then(()=>{
+                        var url = 'http://localhost:8000/dapur/update-order';
+        // var id_order = $(this).attr('data-idorder');
 
-      $.ajax({
-        headers: {
-            'X-CSRF-TOKEN':'{{ csrf_token() }}'
-        },
-        type: "POST",
-        url: actionUrl,
-        data: {id_kasir : {{ Auth::user()->id }},pemesan : $('#pemesan').val(), tipe: $('#tipe_pemesanan').val(), id_makanan: $('#id_makanan').val(), topping: $('#topping').val()}, // serializes the form's elements.
-        success: function(data)
-        {
-          // alert(data); // show response from the php script.
-          Swal.fire({
-            title: 'Sukses',
-            showDenyButton: true,
-            // showCancelButton: true,
-            confirmButtonText: 'Lanjut Bayar',
-            denyButtonText: 'Pesan Lagi',
-          }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-              // Swal.fire('Saved!', '', 'success')
-              window.location.href = "http://localhost:8000/order/preview-order";
-            } else if (result.isDenied) {
-              window.location.href = "http://localhost:8000/order";
+        if(jumlah_done == jumlah_pesanan){
+
+            window.location.href = 'http://localhost:8000/dapur';
+            //     $.ajax({
+            //   headers: {
+            //       'X-CSRF-TOKEN':'{{ csrf_token() }}'
+            //   },
+            //   type: "POST",
+            //   dataType: "JSON",
+            //   url: url,
+            //   data: {id: id_order, flag: 1}, 
+            //   success: function(e)
+            //   {
+            //         if(e.status == 200){
+            //             Swal.fire({
+            //             icon: 'success',
+            //             title: 'Sukses',
+            //             text: e.msg
+            //             }).then((value) => {
+
+            //                 window.location.href = 'http://localhost:8000/dapur';
+            //             });
+            //         }else{
+            //             Swal.fire({
+            //             icon: 'error',
+            //             title: 'Error',
+            //             text: e.msg
+            //             });
+            //         } 
+            //     }
+            // });
+        }
+                    });
+                }else{
+                    Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: e.msg
+                    });
+                } 
             }
-          })
-        }
-      });
+        });
+
+
+        
     });
+});
   </script>
 
 </body>
