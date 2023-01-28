@@ -76,14 +76,9 @@
               <a href="{{ route('preview-order') }}" class="user_link">
                 <i class="fa fa-shopping-cart" aria-hidden="true"></i><span class="badge">{{ $count_cart }}</span>
               </a>
-              <a href="" class="order_online" 
-                    onclick="event.preventDefault();
-                                    document.getElementById('logout-form').submit();">
+              <a href="" class="order_online">
                 Keluar
               </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                    @csrf
-                </form>
             </div>
           </div>
         </nav>
@@ -96,6 +91,33 @@
 
   <section class="food_section layout_padding">
     <div class="container">
+    <!-- <div class="row">
+        <div class="col-md-6">
+            <div class="from-group p-2">
+                <label for="username">Kasir</label>
+                <input type="text" class="form-control" id="kasir" placeholder="Username" aria-label="Username" value="Dikmars" data-id="{{ Session('id_kasir') }}" readonly>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="from-group p-2">
+                <label for="username">Pemesan</label>
+                <input type="text" class="form-control" placeholder="Nama Pemesan / No Meja" name="pemesan" aria-label="pemesan" >
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="from-group p-2">
+                <label for="username">Tipe Pemesanan</label><br>
+                <select class="form-control" name="tipe_pemesanan" required>
+                    <option value="">-- Pilih --</option>
+                    <option value="1">Bungkus</option>
+                    <option value="2">Makan ditempat</option>
+                </select>
+            </div>
+        </div>
+    </div> -->
+
       <div class="heading_container heading_center">
         <h2>
           Menu
@@ -392,7 +414,7 @@
       var namaMakanan = $(this).data('nama');
       var hargaMakanan = $(this).data('harga'); 
       var idMakanan = $(this).data('id');
-      window.location.href = "http://localhost:8000/order/"+namaMakanan+'/'+hargaMakanan+'/'+idMakanan;
+      window.location.href = "http://localhost:8000/order/add-order/{{$id}}/"+namaMakanan+'/'+hargaMakanan+'/'+idMakanan;
 
     });
   </script>

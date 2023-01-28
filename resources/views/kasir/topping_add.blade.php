@@ -108,10 +108,11 @@
           Topping {{ $nama_makanan }}
         </h2>
 
-        <form action="{{ route('place-order'); }}" method="POST" id="form-order">
-          <input type="hidden" id="id_makanan" value="{{ $id }}">
-          <input type="hidden" id="harga" value="{{ $harga }}">
-          <input type="hidden" id="topping" value="">
+        <form action="{{ route('submit-order-add'); }}" method="POST" id="form-order">
+          <input type="text" id="id" value="{{ $id }}">
+          <input type="text" id="id_makanan" value="{{ $id_makanan }}">
+          <input type="text" id="harga" value="{{ $harga }}">
+          <input type="text" id="topping" value="">
         </form>
       </div>
 
@@ -296,7 +297,7 @@
         },
         type: "POST",
         url: actionUrl,
-        data: {id_kasir : {{ Auth::user()->id }},pemesan : $('#pemesan').val(), tipe: $('#tipe_pemesanan').val(), id_makanan: $('#id_makanan').val(), topping: $('#topping').val()}, // serializes the form's elements.
+        data: {id_kasir : {{ Auth::user()->id }},pemesan : $('#pemesan').val(), tipe: $('#tipe_pemesanan').val(), id_makanan: $('#id_makanan').val(), topping: $('#topping').val(), id: $('#id').val()}, // serializes the form's elements.
         success: function(data)
         {
           // alert(data); // show response from the php script.
@@ -310,9 +311,9 @@
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
               // Swal.fire('Saved!', '', 'success')
-              window.location.href = "http://localhost:8000/order/preview-order";
+              window.location.href = "http://localhost:8000/order/payment-order/{{$id}}";
             } else if (result.isDenied) {
-              window.location.href = "http://localhost:8000/order";
+              window.location.href = "http://localhost:8000/order/add-order/{{$id}}";
             }
           })
         }
