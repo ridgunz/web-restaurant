@@ -8,12 +8,14 @@ class AdminAbsenController extends Controller
 {
       // set index page view
 	public function indexAbsen() {
+
 		return view('admin.absensi');
 	}
 
     public function fetchAllAbsen()
     {
-        $emps = Absen::join('users','users.id','users_id')->get();
+        $emps = Absen::select('absensi.id','users.name','users.level','absensi.created_at','absensi.updated_at')
+        ->join('users','users.id','absensi.users_id')->get();
         $output = '';
 		if ($emps->count() > 0) {
 			$output .= '<table class="table table-striped table-sm text-center align-middle">
@@ -42,5 +44,23 @@ class AdminAbsenController extends Controller
 			echo '<h1 class="text-center text-secondary my-5">No record present in the database!</h1>';
 		}
     }
+
+  public function fetchAllAbsenx(Request $request)
+  {
+    {
+      if($request->ajax())
+      {
+       if($request->from_date != '' && $request->to_date != '')
+       {
+        $data = Absen::select('absensi.id','users.name','users.level','absensi.created_at','absensi.updated_at')
+        ->join('users','users.id','absensi.users_id')
+          ->whereBetween('absensi.created_at', array($request->from_date, $request->to_date))
+          ->get();
+
+          echo json_encode($data);
+       }
+     }
+  }
+}
 
 }

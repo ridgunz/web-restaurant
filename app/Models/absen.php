@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class absen extends Model
 {
@@ -19,4 +20,15 @@ class absen extends Model
     public $timestamps = true;
 
     public $table = "absensi";
+
+
+    /**
+ * The attributes that should be cast.
+ *
+ * @var array
+ */
+protected $casts = [
+    'created_at' => 'datetime:Y-m-d H:i:s',
+    'updated_at' => 'datetime:Y-m-d H:i:s',
+];
 }

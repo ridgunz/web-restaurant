@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\KasirController;
-use App\Http\Controllers\DapurController;]
+use App\Http\Controllers\DapurController;
 use App\Http\Controllers\MakananController;
 use App\Http\Controllers\AdminMakananController;
 use App\Http\Controllers\AdminMinumanController;
@@ -137,5 +137,6 @@ Route::middleware(['auth', 'user-access:3'])->group(function () {//admin
 
     Route::get('/absen', [AdminAbsenController::class, 'indexAbsen'])->name('absen');
     Route::get('/fetchAllAbsen', [AdminAbsenController::class, 'fetchAllAbsen'])->name('fetchAllAbsen');
+    Route::post('/fetchAllAbsenx', [AdminAbsenController::class, 'fetchAllAbsenx'])->name('fetchAllAbsenx');
 });
 
