@@ -35,14 +35,9 @@
         <div class="col-md-12">
                     @auth
                         @if(auth()->user()->level == 3)
-                            <!-- <a href="{{ route('menu') }}" class="btn btn-primary mb-4" style="width:300px !important; font-size:18px;">List Menu</a>
-                            <br>
-                            <a href="#" class="btn btn-primary mb-4" style="width:300px !important; font-size:18px;">Laporan</a>
-                            <br>
-                            <a href="#" class="btn btn-primary mb-4" style="width:300px !important; font-size:18px;">Absensi</a> -->
                             <div class="row">
                                 <div class="column">
-                                <a href="{{ route('menu') }}">
+                                <a href="{{ route('makanan') }}">
                                     <img src="{{ url('/images/food.png')}}" style="width:140px;height:120px">
                                     <h2>Makanan</h2>
                                 </a>
@@ -60,7 +55,7 @@
                                 </a>
                                 </div>
                                 <div class="column">
-                                <a href="{{ route('topping') }}">
+                                <a href="{{ route('absen') }}">
                                     <img src="{{url('/images/absen.png')}}" style="width:140px;height:120px">
                                     <h2>Absensi</h2>
                                 </a>
@@ -72,9 +67,9 @@
                                 </a>
                                 </div>
                                 <div class="column">
-                                <a href="{{ route('topping') }}">
+                                <a href="{{ route('akun') }}">
                                     <img src="{{url('/images/akun.png')}}" style="width:140px;height:120px">
-                                    <h2>Manage Akun</h2>
+                                    <h2>Manage Account</h2>
                                 </a>
                                 </div>
                             </div>
