@@ -15,6 +15,12 @@ use App\Models\temp_order_cart;
 use App\Models\temp_order_detail_cart;
 use App\Models\temp_order_topping_cart;
 
+use Mike42\Escpos\Printer;
+use Mike42\Escpos\CapabilityProfile;
+
+use Mike42\Escpos\PrintConnectors\RawbtPrintConnector;
+
+
 use Auth;
 
 class KasirController extends Controller
@@ -62,6 +68,29 @@ class KasirController extends Controller
                 }
             }
     }
+
+    public function place_order_minuman(Request $request){
+        $insert = new temp_order_cart;
+        $insert->kasir_id = $request->id_kasir;
+        $insert->save();
+
+        $id_temp = $insert->id;
+
+        $insert_detail = new temp_order_detail_cart;
+        $insert_detail->id_makanan = $request->id_makanan;
+        $insert_detail->id_temp_order_cart = $id_temp;
+        $insert_detail->save();
+        $id_insert_detail = $insert_detail->id;
+}
+
+public function place_order_minuman_add(Request $request){
+    $id_order = $request->id;
+
+    $insert_detail = new Order_detail;
+    $insert_detail->id_makanan = $request->id_makanan;
+    $insert_detail->order_id = $id_order;
+    $insert_detail->save();
+}
 
     public function preview_order(){
         $count_cart = temp_order_detail_cart::get()->count();
@@ -147,7 +176,7 @@ class KasirController extends Controller
             $order[$value->id_cart][$value->id_detail_cart][$value->id_makanan][$value->id_topping_cart] = $value->id_topping;
         }
 
-        // dd($order);die();
+        // print_r($order);die();
 
 
         if(isset($order)){
@@ -168,12 +197,14 @@ class KasirController extends Controller
                             $insert_detail->save();
                             $id_order_detail = $insert_detail->id;
 
-                            foreach ($value3 as $key4 => $value4) {
-                            $insert_detail_topping = new Order_detail_topping;
-                            $insert_detail_topping->order_detail_id = $id_order_detail;
-                            $insert_detail_topping->id_topping = $value4;
-                            $insert_detail_topping->save();
-                        }
+                                foreach ($value3 as $key4 => $value4) {
+                                    if($value4){
+                                    $insert_detail_topping = new Order_detail_topping;
+                                    $insert_detail_topping->order_detail_id = $id_order_detail;
+                                    $insert_detail_topping->id_topping = $value4;
+                                    $insert_detail_topping->save();
+                                }
+                            }
                     }
                 }
             }
@@ -224,7 +255,9 @@ class KasirController extends Controller
                 ->where('order.flag_selesai', 0)
                 ->groupBy('order.id')
                 ->get();
-        return view('kasir.list_order', ['order' => $order]);
+
+        $count_cart = temp_order_detail_cart::get()->count();
+        return view('kasir.list_order', ['order' => $order,'count_cart' => $count_cart]);
     }
 
     public function payment_order($id){
@@ -282,7 +315,7 @@ class KasirController extends Controller
             'status' => 200,
             'msg' => $msg
         );
-
+        // $this->print_order($id);
         echo json_encode($res);
     }
 
@@ -323,26 +356,6 @@ class KasirController extends Controller
             }
         }
 
-        //     foreach ($order as $key => $value) {
-        //         foreach ($value as $key2 => $value2) {
-        //             foreach ($value2 as $key3 => $value3) {
-        //                 $insert_detail = new Order_detail;
-        //                 $insert_detail->id_makanan = $key3;
-        //                 $insert_detail->order_id = $id_order;
-        //                 $insert_detail->save();
-        //                 $id_order_detail = $insert_detail->id;
-
-        //                 foreach ($value3 as $key4 => $value4) {
-        //                 $insert_detail_topping = new Order_detail_topping;
-        //                 $insert_detail_topping->order_detail_id = $id_order_detail;
-        //                 $insert_detail_topping->id_topping = $value4;
-        //                 $insert_detail_topping->save();
-        //             }
-        //         }
-        //     }
-        // }
-
-
         $res = array(
             'status' => 200,
             'msg' => 'Pemesanan Berhasil'
@@ -351,4 +364,103 @@ class KasirController extends Controller
         echo json_encode($res);
     }
 
+    public function print_order(Request $request){
+        $total_price = 0;
+
+        $order = DB::table('order')
+        ->where('id', $request->id)
+        ->first();
+
+        $order->detail = DB::table('order_detail')
+                ->select('order_detail.id as id_detail_cart', 'menu.*')
+                ->join('menu', 'order_detail.id_makanan', '=', 'menu.id')
+                ->where('order_id', $request->id)
+                ->get();
+
+        foreach ($order->detail as $key => $value) {
+            $price = $value->amount;
+            $total_price += $value->amount;
+            $order->detail[$key]->topping = DB::table('order_detail_topping')
+            ->where('order_detail_id', '=', $value->id_detail_cart)
+            ->join('menu', 'order_detail_topping.id_topping', '=', 'menu.id')
+            ->get();
+
+            
+            foreach($order->detail[$key]->topping as $key2=> $value2){
+                $total_price += $value2->amount;
+                $price += $value2->amount;
+            }
+
+            $order->detail[$key]->price = $price;
+        }
+
+        $items = array();
+        foreach ($order->detail as $key => $value) {
+            array_push($items, new item($value->nama, number_format($value->amount)));
+
+            if($value->topping){
+
+                foreach ($value->topping as $key => $value) {
+                    array_push($items, new item("+".$value->nama, number_format($value->amount)));
+                }
+            }
+        }
+
+        
+        array_push($items, new item("\nTotal Harga", number_format($total_price)));
+
+
+        $profile = CapabilityProfile::load("POS-5890");
+        $connector = new RawbtPrintConnector();
+        $printer = new Printer($connector, $profile);
+
+        $printer->setJustification(Printer::JUSTIFY_CENTER);
+        $printer->text("Bakso Simpang Tugu\n\n");
+        $printer->text("Jl. Mayjen H.R. Edi Sukma\nCiawi, Kec. Ciawi, Kabupaten \nBogor\n\nTelpon : 0812-8457-4121\n\n");
+
+        $printer->setJustification(Printer::JUSTIFY_LEFT);
+        $printer->setEmphasis(true);
+        $printer->text("Pesanan\n");
+        $printer->setEmphasis(false);
+        foreach ($items as $item) {
+            $printer->text($item->getAsString(32)); 
+        }
+        $printer->text("\n\n");
+        $printer->close();
+
+    }
+
+}
+
+class item
+{
+    private $name;
+    private $price;
+    private $dollarSign;
+
+    public function __construct($name = '', $price = '', $dollarSign = false)
+    {
+        $this->name = $name;
+        $this->price = $price;
+        $this->dollarSign = $dollarSign;
+    }
+
+    public function getAsString($width = 48)
+    {
+        $rightCols = 10;
+        $leftCols = $width - $rightCols;
+        if ($this->dollarSign) {
+            $leftCols = $leftCols / 2 - $rightCols / 2;
+        }
+        $left = str_pad($this->name, $leftCols);
+
+        $sign = ($this->dollarSign ? '$ ' : '');
+        $right = str_pad($sign . $this->price, $rightCols, ' ', STR_PAD_LEFT);
+        return "$left$right\n";
+    }
+
+    public function __toString()
+    {
+        return $this->getAsString();
+    }
 }

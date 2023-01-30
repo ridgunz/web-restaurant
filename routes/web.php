@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\KasirController;
-use App\Http\Controllers\DapurController;]
+use App\Http\Controllers\DapurController;
 use App\Http\Controllers\MakananController;
 use App\Http\Controllers\AdminMakananController;
 use App\Http\Controllers\AdminMinumanController;
@@ -38,6 +38,8 @@ Route::middleware(['auth', 'user-access:1'])->group(function () { //kasir
     Route::get('order', [KasirController::class, 'order'])->name('order');
     Route::get('order/{makanan}/{id}/{harga}', [KasirController::class, 'topping'])->name('order-topping');
     Route::post('order/place_order', [KasirController::class,'place_order'])->name('place-order');
+    Route::post('order/place_order_minuman', [KasirController::class,'place_order_minuman'])->name('place-order-minuman');
+    Route::post('order/place_order_minuman_add', [KasirController::class,'place_order_minuman_add'])->name('place-order-minuman-add');
     Route::post('order/delete_order', [KasirController::class,'delete_order'])->name('delete-order');
     Route::get('order/preview-order', [KasirController::class,'preview_order'])->name('preview-order');
     Route::post('order/submit-order', [KasirController::class, 'submit_order'])->name('submit-order');
@@ -51,6 +53,8 @@ Route::middleware(['auth', 'user-access:1'])->group(function () { //kasir
     
     Route::post('order/delete-order-add', [KasirController::class,'delete_order_add'])->name('delete-order-add');
     Route::post('order/submit-order-add', [KasirController::class, 'submit_order_add'])->name('submit-order-add');
+
+    Route::post('order/print-order', [KasirController::class, 'print_order'])->name('print_order');
 });
 
 /*------------------------------------------
