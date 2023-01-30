@@ -21,6 +21,15 @@
         <div class="card shadow">
           <div class="card-header bg-danger d-flex justify-content-between align-items-center">
             <h3 class="text-light">Report Absensi</h3>
+            <form action="#" method="POST" id="add_checkin" enctype="multipart/form-data">
+            @csrf
+            <button type="submit" id="checkin" class="btn btn-primary">Check In</button>
+            </form>
+
+            <form action="#" method="POST" id="add_checkout" enctype="multipart/form-data">
+            @csrf
+            <button type="submit" id="checkout" class="btn btn-primary">Check Out</button>
+            </form>
           </div>
           <div class="card-body" id="show_all_absen">
             <h1 class="text-center text-secondary my-5">Loading...</h1>
@@ -38,6 +47,68 @@
   <script>
     $(function() {
 
+      $("#add_checkin").submit(function(e) {
+        e.preventDefault();
+        const fd = new FormData(this);
+        $.ajax({
+          url: '{{ route('checkinKasir') }}',
+          method: 'post',
+          data: fd,
+          cache: false,
+          contentType: false,
+          processData: false,
+          dataType: 'json',
+          success: function(response) {
+            if (response.status == 200) {
+              Swal.fire(
+                'Berhasil!',
+                'Berhasil Checkin!',
+                'success'
+              )
+              fetchAllAbsenKasir();
+            } else if (response.status == 400) {
+              Swal.fire(
+                'Gagal Checkin!',
+                'Anda sudah checkin hari ini!',
+                'error'
+              )
+              fetchAllAbsenKasir();
+            }
+          }
+        });
+      });
+
+      $("#add_checkout").submit(function(e) {
+        e.preventDefault();
+        const fd = new FormData(this);
+        $.ajax({
+          url: '{{ route('checkoutKasir') }}',
+          method: 'post',
+          data: fd,
+          cache: false,
+          contentType: false,
+          processData: false,
+          dataType: 'json',
+          success: function(response) {
+            if (response.status == 200) {
+              Swal.fire(
+                'Berhasil!',
+                'Berhasil Checkout!',
+                'success'
+              )
+              fetchAllAbsenKasir();
+            } else if (response.status == 400) {
+              Swal.fire(
+                'Gagal Checkout!',
+                'Anda sudah checkout hari ini!',
+                'error'
+              )
+              fetchAllAbsenKasir();
+            }
+          }
+        });
+      });
+
       var date = new Date();
 
       $('.input-daterange').datepicker({
@@ -48,11 +119,11 @@
 
       var _token = $('input[name="_token"]').val();
       // fetch all makanans ajax request
-      fetchAllAbsens();
+      fetchAllAbsenKasir();
 
-      function fetchAllAbsens() {
+      function fetchAllAbsenKasir() {
         $.ajax({
-          url: '{{ route('fetchAllAbsen') }}',
+          url: '{{ route('fetchAllAbsenKasir') }}',
           method: 'get',
           success: function(response) {
             $("#show_all_absen").html(response);
@@ -64,10 +135,10 @@
         });
       }
 
-      function fetchAllAbsenx(from_date = '', to_date = '')
+      function fetchAllAbsenKasirx(from_date = '', to_date = '')
       {
         $.ajax({
-        url:"{{ route('fetchAllAbsenx') }}",
+        url:"{{ route('fetchAllAbsenKasirx') }}",
         method:"POST",
         data:{from_date:from_date, to_date:to_date, _token:_token},
         dataType:"json",
@@ -81,7 +152,7 @@
           output += '<td>' + data[count].name + '</td>';
           output += '<td>' + data[count].level + '</td>';
           output += '<td>' + data[count].created_at + '</td>';
-          output += '<td>' + data[count].updated_at + '</td></tr>';
+          output += '<td>' + data[count].checkout + '</td></tr>';
           }
           $('tbody').html(output);
               }
@@ -95,7 +166,7 @@
     if(from_date != '' &&  to_date != '')
     {
       $('#table').DataTable().destroy();
-      fetchAllAbsenx(from_date, to_date);
+      fetchAllAbsenKasirx(from_date, to_date);
     }
     else
     {
@@ -106,7 +177,7 @@
   $('#refresh').click(function(){
     $('#from_date').val('');
     $('#to_date').val('');
-    fetchAllAbsens();
+    fetchAllAbsenKasir();
   });
 
 });

@@ -33,6 +33,24 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
+                        @auth
+                        @if(auth()->user()->level == 1)
+                            <div class="row">
+                                <div class="column">
+                                <a href="{{ route('order') }}">
+                                    <img src="{{ url('/images/food.png')}}" style="width:140px;height:120px">
+                                    <h2>Order</h2>
+                                </a>
+                                </div>
+                                <div class="column">
+                                <a href="{{ route('absen-kasir') }}">
+                                    <img src="{{url('/images/absen.png')}}" style="width:140px;height:120px">
+                                    <h2>Absensi</h2>
+                                </a>
+                                </div>
+                            </div>
+                        @endif
+                    @endif
                     @auth
                         @if(auth()->user()->level == 3)
                             <div class="row">
