@@ -77,6 +77,7 @@
               order: [0, 'desc'],
               lengthMenu: [10, 25, 50, 100, 1000],
               dom: 'Bfrtip',
+              responsive: true,
               buttons: [
                   'copy', 'csv', 'excel', 'pdf', 'print'
               ]

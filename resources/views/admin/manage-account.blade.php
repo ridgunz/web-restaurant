@@ -343,7 +343,8 @@
             success: function(response) {
               $("#show_all_akuns").html(response);
               $("table").DataTable({
-                order: [0, 'desc']
+                order: [0, 'desc'],
+                responsive: true
               });
             }
           });

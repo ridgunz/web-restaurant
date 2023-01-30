@@ -268,7 +268,8 @@
           success: function(response) {
             $("#show_all_makanans").html(response);
             $("table").DataTable({
-              order: [0, 'desc']
+              order: [0, 'desc'],
+              responsive: true
             });
           }
         });

@@ -16,6 +16,9 @@ return new class extends Migration
         Schema::create('absensi', function (Blueprint $table) {
             $table->id();
             $table->string('users_id');
+            $table->string('flag_checkin');
+            $table->string('flag_checkout');
+            $table->timestamp('checkout');
             $table->timestamps();
         });
     }

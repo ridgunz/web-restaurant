@@ -54,6 +54,15 @@ Route::middleware(['auth', 'user-access:1'])->group(function () { //kasir
     
     Route::post('order/delete-order-add', [KasirController::class,'delete_order_add'])->name('delete-order-add');
     Route::post('order/submit-order-add', [KasirController::class, 'submit_order_add'])->name('submit-order-add');
+
+    // ABSENSI KASIR
+    Route::get('/absen-kasir', [KasirController::class, 'indexAbsenKasir'])->name('absen-kasir');
+    Route::get('/fetchAllAbsenKasir', [KasirController::class, 'fetchAllAbsenKasir'])->name('fetchAllAbsenKasir');
+    Route::post('/fetchAllAbsenKasirx', [KasirController::class, 'fetchAllAbsenKasirx'])->name('fetchAllAbsenKasirx');
+
+    Route::post('/checkinKasir', [KasirController::class, 'checkinKasir'])->name('checkinKasir');
+    Route::post('/checkoutKasir', [KasirController::class, 'checkoutKasir'])->name('checkoutKasir');
+
 });
 
 /*------------------------------------------
