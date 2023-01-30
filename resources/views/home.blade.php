@@ -52,6 +52,24 @@
                         @endif
                     @endif
                     @auth
+                        @if(auth()->user()->level == 2)
+                            <div class="row">
+                                <div class="column">
+                                <a href="{{ route('dapur') }}">
+                                    <img src="{{ url('/images/report.png')}}" style="width:140px;height:120px">
+                                    <h2>Dapur</h2>
+                                </a>
+                                </div>
+                                <div class="column">
+                                <a href="{{ route('absen-dapur') }}">
+                                    <img src="{{url('/images/absen.png')}}" style="width:140px;height:120px">
+                                    <h2>Absensi</h2>
+                                </a>
+                                </div>
+                            </div>
+                        @endif
+                    @endif
+                    @auth
                         @if(auth()->user()->level == 3)
                             <div class="row">
                                 <div class="column">

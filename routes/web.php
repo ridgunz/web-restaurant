@@ -79,6 +79,14 @@ Route::middleware(['auth', 'user-access:2'])->group(function () { //dapur
     Route::get('dapur/detail/{id}', [DapurController::class, 'detail'])->name('dapur-detail');
     Route::post('dapur/update-order', [DapurController::class, 'update_flag_order'])->name('update-flag-order');
     Route::post('dapur/update-pesanan', [DapurController::class, 'update_flag_order_detail'])->name('update-flag-detail');
+
+     // ABSENSI DAPUR
+     Route::get('/absen-dapur', [DapurController::class, 'indexAbsenDapur'])->name('absen-dapur');
+     Route::get('/fetchAllAbsenDapur', [DapurController::class, 'fetchAllAbsenDapur'])->name('fetchAllAbsenDapur');
+     Route::post('/fetchAllAbsenDapurx', [DapurController::class, 'fetchAllAbsenDapurx'])->name('fetchAllAbsenDapurx');
+
+     Route::post('/checkinDapur', [DapurController::class, 'checkinDapur'])->name('checkinDapur');
+     Route::post('/checkoutDapur', [DapurController::class, 'checkoutDapur'])->name('checkoutDapur');
 });
   
 /*------------------------------------------
