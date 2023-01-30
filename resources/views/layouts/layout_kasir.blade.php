@@ -33,7 +33,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <link rel="stylesheet" href="sweetalert2.min.css">
+  <!-- <link rel="stylesheet" href="sweetalert2.min.css"> -->
 
   <style>
 
@@ -49,7 +49,7 @@
 <body class="sub_page">
 
   <div class="hero_area">
-    <div class="bg-box" style="background-color:#333333;">
+    <div class="bg-box" style="background-color:#222831;">
       <!-- <img src="/assets/frontend/images/hero-bg.jpg" alt=""> -->
     </div>
     <!-- header section strats -->
@@ -115,21 +115,9 @@
             </h4>
             <div class="contact_link_box">
               <a href="">
-                <i class="fa fa-map-marker" aria-hidden="true"></i>
-                <span>
-                  Lokasi
-                </span>
-              </a>
-              <a href="">
                 <i class="fa fa-phone" aria-hidden="true"></i>
                 <span>
-                  Telphone +628123456789
-                </span>
-              </a>
-              <a href="">
-                <i class="fa fa-envelope" aria-hidden="true"></i>
-                <span>
-                  email@gmail.com
+                  Telphone 081284574121
                 </span>
               </a>
             </div>
@@ -140,26 +128,6 @@
             <a href="" class="footer-logo">
                 Bakso Simpang Tugu
             </a>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea quo non sit incidunt autem at neque porro saepe ab aliquid sequi ducimus eaque, quod molestias tempore, velit dignissimos maxime odit?
-            </p>
-            <div class="footer_social">
-              <a href="">
-                <i class="fa fa-facebook" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-twitter" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-linkedin" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-instagram" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-pinterest" aria-hidden="true"></i>
-              </a>
-            </div>
           </div>
         </div>
         <div class="col-md-4 footer-col">
@@ -198,10 +166,6 @@
   <script src="https://unpkg.com/isotope-layout@3.0.4/dist/isotope.pkgd.min.js"></script>
   <!-- custom js -->
   <script src="/assets/frontend/js/custom.js"></script>
-  <!-- Google Map -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
-  </script>
-  <!-- End Google Map -->
 
   
 

@@ -49,6 +49,8 @@
             <div class="box">
               <div style="background-color: #222831">
                 <div class="detail-box">
+                  <small>{{$value->kategori}}</small>
+                  <hr style="background-color:white;">  
                   <h5>
                     {{ $value->nama }}
                   </h5>
@@ -125,6 +127,8 @@
             <div class="box">
               <div style="background-color: #222831">
                 <div class="detail-box">
+                  <small>{{$value->kategori}}</small>
+                  <hr style="background-color:white;">  
                   <h5>
                     {{ $value->nama }}
                   </h5>

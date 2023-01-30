@@ -433,40 +433,6 @@ public function place_order_minuman_add(Request $request){
 
     }
 
-}
-
-class item
-{
-    private $name;
-    private $price;
-    private $dollarSign;
-
-    public function __construct($name = '', $price = '', $dollarSign = false)
-    {
-        $this->name = $name;
-        $this->price = $price;
-        $this->dollarSign = $dollarSign;
-    }
-
-    public function getAsString($width = 48)
-    {
-        $rightCols = 10;
-        $leftCols = $width - $rightCols;
-        if ($this->dollarSign) {
-            $leftCols = $leftCols / 2 - $rightCols / 2;
-        }
-        $left = str_pad($this->name, $leftCols);
-
-        $sign = ($this->dollarSign ? '$ ' : '');
-        $right = str_pad($sign . $this->price, $rightCols, ' ', STR_PAD_LEFT);
-        return "$left$right\n";
-    }
-
-    public function __toString()
-    {
-        return $this->getAsString();
-    }
-
     public function indexAbsenKasir(){
 
         return view('kasir.absen-kasir');
@@ -581,4 +547,39 @@ class item
             ]);
         }
     }
+
+}
+
+class item
+{
+    private $name;
+    private $price;
+    private $dollarSign;
+
+    public function __construct($name = '', $price = '', $dollarSign = false)
+    {
+        $this->name = $name;
+        $this->price = $price;
+        $this->dollarSign = $dollarSign;
+    }
+
+    public function getAsString($width = 48)
+    {
+        $rightCols = 10;
+        $leftCols = $width - $rightCols;
+        if ($this->dollarSign) {
+            $leftCols = $leftCols / 2 - $rightCols / 2;
+        }
+        $left = str_pad($this->name, $leftCols);
+
+        $sign = ($this->dollarSign ? '$ ' : '');
+        $right = str_pad($sign . $this->price, $rightCols, ' ', STR_PAD_LEFT);
+        return "$left$right\n";
+    }
+
+    public function __toString()
+    {
+        return $this->getAsString();
+    }
+
 }
