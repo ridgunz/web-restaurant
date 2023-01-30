@@ -52,16 +52,28 @@ class AdminAkunController extends Controller
     public function storeAkun(Request $request) {
       
 		//validate form
-        $this->validate($request, [
+        // $validated = $request->validate([
+        //     'name'     => 'required',
+        //     'username'     => 'required', 'unique:users',
+        //     'level'     => 'required',
+        //     'password'   => 'required','string', 'min:8', 'confirmed',
+        //     'confirm-password'   => 'required','string', 'min:8', 'same:password'
+        // ]);
+
+        $validator = Validator::make($request->all(), [
             'name'     => 'required',
-            'username'     => 'required', 'unique:users',
+            'username'     => 'required|unique:users',
             'level'     => 'required',
-            'password'   => 'required','string', 'min:8', 'confirmed',
-            'confirm-password'   => 'required','string', 'min:8', 'same:password'
+            'password'   => 'required|string|min:6',
         ]);
 
+         //check if validation fails
+         if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
         //create post
-        User::create([
+        $user = User::create([
             'name'     => $request->name,
             'username'     => $request->username,
             'level'   => $request->level,
@@ -80,11 +92,27 @@ class AdminAkunController extends Controller
 	}
 
     	// handle update akun ajax request
-	public function update(Request $request) {
-		$emp = User::find($request->id);
-		$empData = ['name' => $request->name,'username' => $request->username,'level' => $request->level,'password' => Hash::make($request->password)];
+	public function updateAkun(Request $request) {
 
-		$emp->update($empData);
+        $validator = Validator::make($request->all(), [
+            'name'     => 'required',
+            'level'     => 'required',
+            'password'   => 'required|string|min:6',
+        ]);
+
+        //check if validation fails
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+		$emp = User::find($request->akun_id);
+        $emp->update([
+            'name' => $request->name,'level' => $request->level,'password' => Hash::make($request->password)
+        ]);
+		
+        // $empData = ['name' => $request->name,'username' => $request->username,'level' => $request->level,'password' => Hash::make($request->password)];
+
+		// $emp->update($empData);
 		return response()->json([
 			'status' => 200,
 		]);
