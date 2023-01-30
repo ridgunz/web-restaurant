@@ -11,7 +11,8 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th style="width: 80%;">Pemesan</th>
+                    <th style="width: 65%;">Pemesan</th>
+                    <th style="width: 25%">Catatan</th>
                     <th style="width: 20%;">Topping</th>
                 </tr>
             </thead>
@@ -19,6 +20,7 @@
               @foreach($order as $key => $value)
                 <tr class="clickable-row" data-flag="0" data-id="{{$value->id}}" data-idorder='{{ $value->order_id }}'>
                     <td>{{ $value->nama }}</td>
+                    <td>{{$value->note}}</td>
                     <td>
                         <ul style="padding-left: 10px;">
                             @foreach($value->topping as $value2)

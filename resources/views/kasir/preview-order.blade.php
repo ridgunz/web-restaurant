@@ -43,7 +43,8 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th style="width: 100%;">Pesanan</th>
+                    <th style="width: 60%;">Pesanan</th>
+                    <th style="width:40%;">Catatan</th>
                     <th colspan=2>Harga</th>
                 </tr>
             </thead>
@@ -57,6 +58,7 @@
                         @endforeach
                       </ul>
                     </td>
+                    <td><textarea class="form-control catatan" data-id="{{$value->id}}" rows="3"></textarea></td>
                     <td>{{ number_format($value->price) }}</td>
                     <td><a href="javascript:void(0)" data-id="{{ $value->id_detail_cart }}" class="btn btn-danger btn-sm delete">Hapus</a></td>
                 </tr>
@@ -64,7 +66,7 @@
             </tbody>
             <tfoot>
               <tr>
-                <th>Total</th>
+                <th colspan=2>Total</th>
                 <th colspan=2>Rp. {{ number_format($total_price) }}</th>
               </tr>
             </tfoot>
@@ -84,7 +86,17 @@
   <script>
 
 $('#order').click(function(){
-
+  var id_makanan = [];
+  var value_makanan = [];
+  $.each($('.catatan'), function(index, value){
+  if($('.catatan').eq(index).val() != ''){
+   id_makanan.push($('.catatan').eq(index).attr('data-id'));
+   value_makanan.push($('.catatan').eq(index).val()); 
+  }
+  });
+  // console.log(id_makanan);
+  // console.log(value_makanan);
+  // return false;
  var namaPemesan = $('input[name="pemesan"]').val();
  var tipePesanan = $('select[name="tipe_pemesanan"]').val();
   if(namaPemesan == ''){
@@ -131,7 +143,7 @@ if (result.isConfirmed) {
       type: "POST",
       url: actionUrl,
       dataType: 'JSON',
-      data: {namaPemesan: namaPemesan, tipePesanan: tipePesanan}, // serializes the form's elements.
+      data: {namaPemesan: namaPemesan, tipePesanan: tipePesanan, catatan_id_makanan: id_makanan, catatan_val_makanan: value_makanan}, // serializes the form's elements.
       success: function(data)
       {
         console.log(data.msg)

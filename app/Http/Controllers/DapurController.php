@@ -24,7 +24,7 @@ class DapurController extends Controller
     public function detail($id){
         // $order = Order::where('flag_selesai', 0)->get();
         $order = DB::table('order_detail')
-                ->select('nama','order_id', 'order_detail.id')
+                ->select('nama','order_id', 'order_detail.id', 'note')
                 ->join('menu', 'order_detail.id_makanan', '=', 'menu.id')
                 ->where('order_id', $id)
                 ->get();

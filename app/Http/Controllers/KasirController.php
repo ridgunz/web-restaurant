@@ -104,6 +104,7 @@ public function place_order_minuman_add(Request $request){
                 ->select('temp_order_detail_cart.id as id_detail_cart', 'menu.*')
                 ->join('menu', 'temp_order_detail_cart.id_makanan', '=', 'menu.id')
                 ->get();
+                
 
 
         foreach ($cart as $key => $value) {
@@ -196,6 +197,13 @@ public function place_order_minuman_add(Request $request){
                             $insert_detail = new Order_detail;
                             $insert_detail->id_makanan = $key3;
                             $insert_detail->order_id = $id_order;
+                            if($request->catatan_id_makanan){
+                                foreach ($request->catatan_id_makanan as $key => $value) {
+                                    if($key3 == $value){
+                                        $insert_detail->note = $request->catatan_val_makanan[$key];
+                                    }
+                                }
+                            }
                             $insert_detail->save();
                             $id_order_detail = $insert_detail->id;
 
