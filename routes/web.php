@@ -9,6 +9,9 @@ use App\Http\Controllers\MakananController;
 use App\Http\Controllers\AdminMakananController;
 use App\Http\Controllers\AdminMinumanController;
 use App\Http\Controllers\AdminToppingController;
+use App\Http\Controllers\AdminAkunController;
+use App\Http\Controllers\AdminAbsenController;
+use App\Http\Controllers\AdminLaporanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +58,15 @@ Route::middleware(['auth', 'user-access:1'])->group(function () { //kasir
     Route::post('order/submit-order-add', [KasirController::class, 'submit_order_add'])->name('submit-order-add');
 
     Route::post('order/print-order', [KasirController::class, 'print_order'])->name('print_order');
+
+    // ABSENSI KASIR
+    Route::get('/absen-kasir', [KasirController::class, 'indexAbsenKasir'])->name('absen-kasir');
+    Route::get('/fetchAllAbsenKasir', [KasirController::class, 'fetchAllAbsenKasir'])->name('fetchAllAbsenKasir');
+    Route::post('/fetchAllAbsenKasirx', [KasirController::class, 'fetchAllAbsenKasirx'])->name('fetchAllAbsenKasirx');
+
+    Route::post('/checkinKasir', [KasirController::class, 'checkinKasir'])->name('checkinKasir');
+    Route::post('/checkoutKasir', [KasirController::class, 'checkoutKasir'])->name('checkoutKasir');
+
 });
 
 /*------------------------------------------
@@ -76,14 +88,14 @@ All Admin Routes List
 --------------------------------------------*/
 Route::middleware(['auth', 'user-access:3'])->group(function () {//admin
 
-    Route::get('menu', [AdminController::class, 'index'])->name('menu');
-    Route::get('list-menu', [AdminController::class, 'getMenu'])->name('list-menu');
+    // Route::get('menu', [AdminController::class, 'index'])->name('menu');
+    // Route::get('list-menu', [AdminController::class, 'getMenu'])->name('list-menu');
 
-    Route::get('menu-minuman', [AdminController::class, 'index_minuman'])->name('minuman');
-    Route::get('list-minuman', [AdminController::class, 'getMinuman'])->name('list-minuman');
+    // Route::get('menu-minuman', [AdminController::class, 'index_minuman'])->name('minuman');
+    // Route::get('list-minuman', [AdminController::class, 'getMinuman'])->name('list-minuman');
 
-    Route::get('menu-topping', [AdminController::class, 'index_topping'])->name('topping');
-    Route::get('list-topping', [AdminController::class, 'getTopping'])->name('list-topping');
+    // Route::get('menu-topping', [AdminController::class, 'index_topping'])->name('topping');
+    // Route::get('list-topping', [AdminController::class, 'getTopping'])->name('list-topping');
     Route::get('laporan', [AdminController::class, 'laporan'])->name('laporan');
     Route::get('absensi', [AdminController::class, 'absensi'])->name('absensi');
 
@@ -94,7 +106,7 @@ Route::middleware(['auth', 'user-access:3'])->group(function () {//admin
     /*
         MENU MAKANAN
     */
-    Route::get('/makanan', [AdminMakananController::class, 'index']);
+    Route::get('/makanan', [AdminMakananController::class, 'index'])->name('makanan');
     Route::get('/fetchall', [AdminMakananController::class, 'fetchAll'])->name('fetchAll');
     Route::post('/store', [AdminMakananController::class, 'store'])->name('store');
     Route::get('/edit', [AdminMakananController::class, 'edit'])->name('edit');
@@ -104,7 +116,7 @@ Route::middleware(['auth', 'user-access:3'])->group(function () {//admin
     /*
         MENU MINUMAN
     */
-    Route::get('/minuman', [AdminMinumanController::class, 'indexMinuman']);
+    Route::get('/minuman', [AdminMinumanController::class, 'indexMinuman'])->name('minuman');
     Route::get('/fetchallMinuman', [AdminMinumanController::class, 'fetchAllMinuman'])->name('fetchAllMinuman');
     Route::post('/storeMinuman', [AdminMinumanController::class, 'storeMinuman'])->name('storeMinuman');
     Route::get('/editMinuman', [AdminMinumanController::class, 'editMinuman'])->name('editMinuman');
@@ -115,12 +127,40 @@ Route::middleware(['auth', 'user-access:3'])->group(function () {//admin
      /*
         MENU TOPPING
     */
-    Route::get('/topping', [AdminToppingController::class, 'indexTopping']);
+    Route::get('/topping', [AdminToppingController::class, 'indexTopping'])->name('topping');
     Route::get('/fetchallTopping', [AdminToppingController::class, 'fetchAllTopping'])->name('fetchAllTopping');
     Route::post('/storeTopping', [AdminToppingController::class, 'storeTopping'])->name('storeTopping');
     Route::get('/editTopping', [AdminToppingController::class, 'editTopping'])->name('editTopping');
     Route::post('/updateTopping', [AdminToppingController::class, 'updateTopping'])->name('updateTopping');
     Route::delete('/deleteTopping', [AdminToppingController::class, 'deleteTopping'])->name('deleteTopping');
 
+
+    /*
+        MANAGE AKUN
+    */
+
+    Route::get('/account', [AdminAkunController::class, 'indexAkun'])->name('akun');
+    Route::get('/fetchAllAkun', [AdminAkunController::class, 'fetchAllAkun'])->name('fetchAllAkun');
+    Route::post('/storeAkun', [AdminAkunController::class, 'storeAkun'])->name('storeAkun');
+    Route::get('/editAkun', [AdminAkunController::class, 'editAkun'])->name('editAkun');
+    Route::post('/updateAkun', [AdminAkunController::class, 'updateAkun'])->name('updateAkun');
+    Route::delete('/deleteAkun', [AdminAkunController::class, 'deleteAkun'])->name('deleteAkun');
+
+
+     /*
+        MANAGE Absensi
+    */
+
+    Route::get('/absen', [AdminAbsenController::class, 'indexAbsen'])->name('absen');
+    Route::get('/fetchAllAbsen', [AdminAbsenController::class, 'fetchAllAbsen'])->name('fetchAllAbsen');
+    Route::post('/fetchAllAbsenx', [AdminAbsenController::class, 'fetchAllAbsenx'])->name('fetchAllAbsenx');
+
+       /*
+        MANAGE LAPORAN
+    */
+
+    Route::get('/laporan', [AdminLaporanController::class, 'indexLaporan'])->name('laporan');
+    Route::get('/fetchAllOrder', [AdminLaporanController::class, 'fetchAllOrder'])->name('fetchAllOrder');
+    Route::post('/fetchAllOrderx', [AdminLaporanController::class, 'fetchAllOrderx'])->name('fetchAllOrderx');
 });
 

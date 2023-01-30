@@ -13,14 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('order', function (Blueprint $table) {
-            $table->integer('id');
-            $table->integer('user_id');
-            $table->integer('tipe_order');
-            $table->string('nama_pemesan');
-            $table->integer('flag_selesai');
-            $table->string('tipe_pembayaran');
-            $table->integer('total_pembayaran');
+        Schema::create('absensi', function (Blueprint $table) {
+            $table->id();
+            $table->string('users_id');
+            $table->string('flag_checkin');
+            $table->string('flag_checkout');
+            $table->timestamp('checkout');
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order');
+        Schema::dropIfExists('absensi');
     }
 };

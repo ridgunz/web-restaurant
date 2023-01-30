@@ -42,7 +42,7 @@
           </div>
           <div class="my-2">
             <label for="image">Select Image</label>
-            <input type="file" name="image" class="form-control" required>
+            <input type="file" name="image" class="form-control">
           </div>
         </div>
         <div class="modal-footer">
@@ -74,7 +74,7 @@
               <input type="text" name="nama" id="nama" class="form-control" required>
             </div>
             <div class="my-2">
-              <label for="lname">Deskripsi</label>
+              <label for="deskripsi">Deskripsi</label>
               <input type="text" name="deskripsi" id="deskripsi" class="form-control" required>
             </div>
           <div class="my-2">
@@ -268,7 +268,8 @@
           success: function(response) {
             $("#show_all_makanans").html(response);
             $("table").DataTable({
-              order: [0, 'desc']
+              order: [0, 'desc'],
+              responsive: true
             });
           }
         });

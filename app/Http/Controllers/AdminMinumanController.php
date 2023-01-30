@@ -56,9 +56,15 @@ class AdminMinumanController extends Controller
 
     	// handle insert a new minuman ajax request
 	public function storeMinuman(Request $request) {
-		$file = $request->file('image');
-		$fileName = time() . '.' . $file->getClientOriginalExtension();
-		$file->storeAs('public/images', $fileName);
+		if($request-> file('image') != null)
+		{
+			$file = $request->file('image');
+			$fileName = time() . '.' . $file->getClientOriginalExtension();
+			$file->storeAs('public/images', $fileName);
+		}else
+		{
+			$fileName = '';
+		}
 
 		$empData = [ 'nama' => $request->nama, 'deskripsi' => $request->deskripsi, 'amount' => $request->harga, 'stock' => $request->stock, 'is_active' => $request->is_active, 'image' => $fileName, 'kategori' => 'Minuman'];
 		Menu::create($empData);
@@ -101,7 +107,13 @@ class AdminMinumanController extends Controller
 	public function deleteMinuman(Request $request) {
 		$id = $request->id;
 		$emp = Menu::find($id);
-		if (Storage::delete('public/images/' . $emp->image)) {
+		if($emp->image != null)
+		{
+			if (Storage::delete('public/images/' . $emp->image)) {
+				Menu::destroy($id);
+			}
+		}else
+		{
 			Menu::destroy($id);
 		}
 	}

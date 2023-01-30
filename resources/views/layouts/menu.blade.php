@@ -14,6 +14,11 @@
   <!-- Fonts -->
   <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/vendor/fonts/boxicons.css" />
+    <link rel="stylesheet" href="/assets/vendor/css/pages/page-auth.css" />
+    <!-- Helpers -->
+    <script src="/assets/vendor/js/helpers.js"></script>
+    
 
     <!-- Scripts -->
 
