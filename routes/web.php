@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminMinumanController;
 use App\Http\Controllers\AdminToppingController;
 use App\Http\Controllers\AdminAkunController;
 use App\Http\Controllers\AdminAbsenController;
+use App\Http\Controllers\AdminLaporanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -128,6 +129,8 @@ Route::middleware(['auth', 'user-access:3'])->group(function () {//admin
     Route::get('/account', [AdminAkunController::class, 'indexAkun'])->name('akun');
     Route::get('/fetchAllAkun', [AdminAkunController::class, 'fetchAllAkun'])->name('fetchAllAkun');
     Route::post('/storeAkun', [AdminAkunController::class, 'storeAkun'])->name('storeAkun');
+    Route::get('/editAkun', [AdminAkunController::class, 'editAkun'])->name('editAkun');
+    Route::post('/updateAkun', [AdminAkunController::class, 'updateAkun'])->name('updateAkun');
     Route::delete('/deleteAkun', [AdminAkunController::class, 'deleteAkun'])->name('deleteAkun');
 
 
@@ -138,5 +141,13 @@ Route::middleware(['auth', 'user-access:3'])->group(function () {//admin
     Route::get('/absen', [AdminAbsenController::class, 'indexAbsen'])->name('absen');
     Route::get('/fetchAllAbsen', [AdminAbsenController::class, 'fetchAllAbsen'])->name('fetchAllAbsen');
     Route::post('/fetchAllAbsenx', [AdminAbsenController::class, 'fetchAllAbsenx'])->name('fetchAllAbsenx');
+
+       /*
+        MANAGE LAPORAN
+    */
+
+    Route::get('/laporan', [AdminLaporanController::class, 'indexLaporan'])->name('laporan');
+    Route::get('/fetchAllOrder', [AdminLaporanController::class, 'fetchAllOrder'])->name('fetchAllOrder');
+    Route::post('/fetchAllOrderx', [AdminLaporanController::class, 'fetchAllOrderx'])->name('fetchAllOrderx');
 });
 

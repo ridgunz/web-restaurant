@@ -36,7 +36,7 @@ class AdminAkunController extends Controller
                 <td>' . $emp->username . '</td>
                 <td>' . $emp->level . '</td>
                 <td>
-                  <a href="#" id="' . $emp->id . '" class="text-success mx-1 editIcon" data-bs-toggle="modal" data-bs-target="#editAkunnModal"><i class="bi-pencil-square h4"></i></a>
+                  <a href="#" id="' . $emp->id . '" class="text-success mx-1 editIcon" data-bs-toggle="modal" data-bs-target="#editAkunModal"><i class="bi-pencil-square h4"></i></a>
 
                   <a href="#" id="' . $emp->id . '" class="text-danger mx-1 deleteIcon"><i class="bi-trash h4"></i></a>
                 </td>
@@ -57,7 +57,7 @@ class AdminAkunController extends Controller
             'username'     => 'required', 'unique:users',
             'level'     => 'required',
             'password'   => 'required','string', 'min:8', 'confirmed',
-            'password'   => 'required','string', 'min:8', 'same:password'
+            'confirm-password'   => 'required','string', 'min:8', 'same:password'
         ]);
 
         //create post
@@ -73,12 +73,29 @@ class AdminAkunController extends Controller
 		]);
 	}
 
+    public function editAkun(Request $request) {
+		$id = $request->id;
+		$emp = User::find($id);
+		return response()->json($emp);
+	}
+
+    	// handle update akun ajax request
+	public function update(Request $request) {
+		$emp = User::find($request->id);
+		$empData = ['name' => $request->name,'username' => $request->username,'level' => $request->level,'password' => Hash::make($request->password)];
+
+		$emp->update($empData);
+		return response()->json([
+			'status' => 200,
+		]);
+	}
+
      // handle delete an akun ajax request
 	public function deleteAkun(Request $request) {
 		$id = $request->id;
 		$emp = User::find($id);
         if($emp->level != '3' && auth()->user()->id != $emp->id)
-        {
+        {   
             User::destroy($id);
         }else
         {

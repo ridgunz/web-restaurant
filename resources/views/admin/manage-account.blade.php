@@ -4,28 +4,98 @@
 <div class="modal fade" id="addAkunModal" tabindex="-1" aria-labelledby="exampleModalLabel"
    data-bs-backdrop="static" aria-hidden="true">
    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Add Account</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+   <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add New Makanan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="#" method="POST" id="add_makanan_form" enctype="multipart/form-data">
+        @csrf
+        <div class="modal-body p-4 bg-light">
+            <div class="my-2">
+              <label for="name">Nama</label>
+              <input type="text" name="name" class="form-control" required>
+            </div>
+          <div class="my-2">
+            <label for="username">Username</label>
+            <input type="text" name="username" class="form-control" required>
+          </div>
+          <div class="my-3 form-password-toggle">
+                  <div class="d-flex justify-content-between">
+                     <label class="form-label" for="password">{{ __('Password') }}</label>
+                  </div>
+                  <div class="input-group input-group-merge">
+                     <input
+                        type="password"
+                        class="form-control @error('password') is-invalid @enderror"
+                        name="password"
+                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                        aria-describedby="password"
+                        autocomplete="current-password" required
+                        />
+                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide" id="togglePassword"></i></span>
+                  </div>
          </div>
-         <form action="#" method="POST" id="add_akun_form" enctype="multipart/form-data">
-            @csrf
-            <div class="modal-body p-4 bg-light">
-               <div class="my-2">
-                  <label for="nama">Nama</label>
-                  <input type="text" name="name" id="name" class="form-control" required>
+         <div class="my-3 form-password-toggle">
+                  <div class="d-flex justify-content-between">
+                     <label class="form-label" for="confirm-password">{{ __('Confirm Password') }}</label>
+                  </div>
+                  <div class="input-group input-group-merge">
+                     <input
+                        type="password"
+                        class="form-control @error('password') is-invalid @enderror"
+                        name="confirm-password"
+                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                        aria-describedby="password"
+                        autocomplete="current-password" required
+                        />
+                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide" id="toggleConfirmPassword"></i></span>
+                  </div>
                </div>
                <div class="my-2">
-                  <label for="username">Username</label>
-                  <input type="text" name="username" id="username" class="form-control" required>
+                  <label for="level" class="col-sm-12 control-label">Level</label>
+                  <div class="col-sm-12">
+                     <select name="level" class="form-control" required>
+                        <option value="">Choose</option>
+                        <option value="1">Kasir</option>
+                        <option value="2">Dapur</option>
+                        <option value="3">Admin</option>
+                     </select>
+                  </div>
                </div>
-               <!-- <div class="my-2 form-password-toggle">
-                  <label for="password">Password</label>
-                  <input type="password" name="password" id="password" class="form-control" required>
-                  <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                  </div> -->
-               <div class="my-3 form-password-toggle">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" id="add_akun_btn" class="btn btn-primary">Add Account</button>
+        </div>
+      </form>
+    </div>
+   </div>
+</div>
+{{-- add new akun modal end --}}
+
+{{-- edit account modal start --}}
+<div class="modal fade" id="editAkunModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+  data-bs-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Account</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="#" method="POST" id="edit_akun_form" enctype="multipart/form-data">
+        @csrf
+        <input type="hidden" name="akun_id" id="akun_id">
+        <div class="modal-body p-4 bg-light">
+            <div class="my-2">
+              <label for="name">Nama</label>
+              <input type="text" name="name" id="name" class="form-control" required>
+            </div>
+            <div class="my-2">
+              <label for="username">Username</label>
+              <input type="text" name="username" id="username" class="form-control" disabled>
+            </div>
+            <div class="my-3 form-password-toggle">
                   <div class="d-flex justify-content-between">
                      <label class="form-label" for="password">{{ __('Password') }}</label>
                   </div>
@@ -37,9 +107,9 @@
                         name="password"
                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                         aria-describedby="password"
-                        autocomplete="current-password"
+                        autocomplete="current-password" required
                         />
-                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide" id="togglePassword"></i></span>
                   </div>
                </div>
                <div class="my-3 form-password-toggle">
@@ -54,62 +124,10 @@
                         name="confirm-password"
                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                         aria-describedby="password"
-                        autocomplete="current-password"
+                        autocomplete="current-password" required
                         />
-                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide" id="toggleConfirmPassword"></i></span>
                   </div>
-               </div>
-               <!-- <div class="my-2">
-                  <label for="password-confirm">Confirm Password</label>
-                  <input type="password" name="password-confirm" id="password-confirm" class="form-control" name="password" required autocomplete="new-password">
-                  @error('password')
-                                          <span class="invalid-feedback" role="alert">
-                                              <strong>{{ $message }}</strong>
-                                          </span>
-                                      @enderror
-                  </div> -->
-               <div class="my-2">
-                  <label for="level" class="col-sm-12 control-label">Level</label>
-                  <div class="col-sm-12">
-                     <select name="level" id="level" class="form-control" required>
-                        <option value="">Choose</option>
-                        <option value="1">Kasir</option>
-                        <option value="2">Dapur</option>
-                        <option value="3">Admin</option>
-                     </select>
-                  </div>
-               </div>
-            </div>
-            <div class="modal-footer">
-               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-               <button type="submit" id="add_akun_btn" class="btn btn-primary">Add Account</button>
-            </div>
-         </form>
-      </div>
-   </div>
-</div>
-{{-- add new makanan modal end --}}
-{{-- edit makanan modal start --}}
-<div class="modal fade" id="editAkunModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-   data-bs-backdrop="static" aria-hidden="true">
-   <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Edit Akun</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-         </div>
-         <form action="#" method="POST" id="edit_akun_form" enctype="multipart/form-data">
-            @csrf
-            <input type="hidden" name="akun_id" id="akun_id">
-            <input type="hidden" name="akun_image" id="akun_image">
-            <div class="modal-body p-4 bg-light">
-               <div class="my-2">
-                  <label for="nama">Nama</label>
-                  <input type="text" name="name" id="name" class="form-control" required>
-               </div>
-               <div class="my-2">
-                  <label for="username">Username</label>
-                  <input type="text" name="username" id="username" class="form-control" required>
                </div>
                <div class="my-2">
                   <label for="level" class="col-sm-12 control-label">Level</label>
@@ -122,17 +140,17 @@
                      </select>
                   </div>
                </div>
-            </div>
-      </div>
-      <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      <button type="submit" id="edit_akun_btn" class="btn btn-success">Update Account</button>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" id="edit_akun_btn" class="btn btn-success">Update Account</button>
+        </div>
       </form>
-   </div>
+    </div>
+  </div>
 </div>
-</div>
-{{-- edit akun modal end --}}
+{{-- edit account modal end --}}
+
 <body class="bg-light">
    <div class="container">
       <div class="row my-5">
@@ -156,6 +174,38 @@
    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
    <script>
       $(function() {
+
+         const togglePassword = document
+            .querySelector('#togglePassword');
+            const toggleConfirmPassword = document
+            .querySelector('#toggleConfirmPassword');
+  
+        const password = document.querySelector('#password');
+        const confirmPassword = document.querySelector('#confirm-password');
+  
+        togglePassword.addEventListener('click', () => {
+  
+            // Toggle the type attribute using
+            // getAttribure() method
+            const type = password
+                .getAttribute('type') === 'password' ?
+                'text' : 'password';
+                  
+            password.setAttribute('type', type);
+  
+        });
+
+        toggleConfirmPassword.addEventListener('click', () => {
+  
+         // Toggle the type attribute using
+         // getAttribure() method
+         const type = confirmPassword
+               .getAttribute('type') === 'password' ?
+               'text' : 'password';
+               
+               confirmPassword.setAttribute('type', type);
+
+         });
       
       
          // add new akun ajax request
@@ -186,6 +236,56 @@
             }
           });
         });
+
+         // edit akun ajax request
+      $(document).on('click', '.editIcon', function(e) {
+        e.preventDefault();
+        let id = $(this).attr('id');
+        $.ajax({
+          url: '{{ route('editAkun') }}',
+          method: 'get',
+          data: {
+            id: id,
+            _token: '{{ csrf_token() }}'
+          },
+          success: function(response) {
+            $("#name").val(response.name);
+            $("#username").val(response.username);
+            $("#level").val(response.level);
+            $("#akun_id").val(response.id);
+          }
+        });
+      });
+
+       // update akun ajax request
+       $("#edit_akun_form").submit(function(e) {
+        e.preventDefault();
+        const fd = new FormData(this);
+        console.log(fd);
+        $("#edit_akun_btn").text('Updating...');
+        $.ajax({
+          url: '{{ route('updateAkun') }}',
+          method: 'post',
+          data: fd,
+          cache: false,
+          contentType: false,
+          processData: false,
+          dataType: 'json',
+          success: function(response) {
+            if (response.status == 200) {
+              Swal.fire(
+                'Updated!',
+                'Account Updated Successfully!',
+                'success'
+              )
+              fetchAllAkuns();
+            }
+            $("#edit_akun_btn").text('Update account');
+            $("#edit_akun_form")[0].reset();
+            $("#editAkunModal").modal('hide');
+          }
+        });
+      });
       
          // delete akun ajax request
          $(document).on('click', '.deleteIcon', function(e) {

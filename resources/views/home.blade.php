@@ -61,7 +61,7 @@
                                 </a>
                                 </div>
                                 <div class="column">
-                                <a href="{{ route('topping') }}">
+                                <a href="{{ route('laporan') }}">
                                     <img src="{{url('/images/report.png')}}" style="width:140px;height:120px">
                                     <h2>Laporan</h2>
                                 </a>
