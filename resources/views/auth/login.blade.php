@@ -119,7 +119,9 @@
                       aria-describedby="password"
                       autocomplete="current-password"
                     />
-                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                    <div class="input-group-addon">
+                      <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                    </div>
                   </div>
                 @error('password')
                     <span class="invalid-feedback" role="alert">

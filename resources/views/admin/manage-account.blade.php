@@ -29,14 +29,16 @@
                   <div class="input-group input-group-merge">
                      <input
                         type="password"
-                        class="form-control @error('password') is-invalid @enderror"
+                        class="form-control pwd"
                         name="password"
                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                         aria-describedby="password"
                         autocomplete="current-password"
                         required
                         />
-                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide" id="togglePassword"></i></span>
+                        <span class="input-group-text cursor-pointer">
+                          <button class="btn btn-default reveal" type="button"><i class="bx bx-hide"></i></button>
+                        </span>  
                   </div>
                   <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-password"></div>
             </div>
@@ -93,13 +95,15 @@
                      <input
                         type="password"
                         id="password"
-                        class="form-control @error('password') is-invalid @enderror"
+                        class="form-control pwd"
                         name="password"
                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                         aria-describedby="password"
                         autocomplete="current-password" required
                         />
-                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide" id="togglePassword"></i></span>
+                        <span class="input-group-text cursor-pointer">
+                          <button class="btn btn-default reveal" type="button"><i class="bx bx-hide"></i></button>
+                        </span>  
                   </div>
                   <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-passwords"></div>
                </div>
@@ -150,22 +154,14 @@
    <script>
       $(function() {
 
-         const togglePassword = document
-            .querySelector('#togglePassword');
-  
-        const password = document.querySelector('#password');
-  
-        togglePassword.addEventListener('click', () => {
-  
-            // Toggle the type attribute using
-            // getAttribure() method
-            const type = password
-                .getAttribute('type') === 'password' ?
-                'text' : 'password';
-                  
-            password.setAttribute('type', type);
-  
-        });
+        $(".reveal").on('click',function() {
+          var $pwd = $(".pwd");
+          if ($pwd.attr('type') === 'password') {
+              $pwd.attr('type', 'text');
+          } else {
+              $pwd.attr('type', 'password');
+          }
+      });
       
       
          // add new akun ajax request
