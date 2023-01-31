@@ -6,19 +6,21 @@
    <div class="modal-dialog modal-dialog-centered">
    <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add New Makanan</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Add New Account</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="#" method="POST" id="add_makanan_form" enctype="multipart/form-data">
+      <form action="#" method="POST" id="add_akun_form" enctype="multipart/form-data">
         @csrf
         <div class="modal-body p-4 bg-light">
             <div class="my-2">
               <label for="name">Nama</label>
               <input type="text" name="name" class="form-control" required>
+              <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-name"></div>
             </div>
           <div class="my-2">
             <label for="username">Username</label>
             <input type="text" name="username" class="form-control" required>
+            <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-username"></div>
           </div>
           <div class="my-3 form-password-toggle">
                   <div class="d-flex justify-content-between">
@@ -27,31 +29,19 @@
                   <div class="input-group input-group-merge">
                      <input
                         type="password"
-                        class="form-control @error('password') is-invalid @enderror"
+                        class="form-control pwd"
                         name="password"
                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                         aria-describedby="password"
-                        autocomplete="current-password" required
+                        autocomplete="current-password"
+                        required
                         />
-                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide" id="togglePassword"></i></span>
+                        <span class="input-group-text cursor-pointer">
+                          <button class="btn btn-default reveal" type="button"><i class="bx bx-hide"></i></button>
+                        </span>  
                   </div>
-         </div>
-         <div class="my-3 form-password-toggle">
-                  <div class="d-flex justify-content-between">
-                     <label class="form-label" for="confirm-password">{{ __('Confirm Password') }}</label>
-                  </div>
-                  <div class="input-group input-group-merge">
-                     <input
-                        type="password"
-                        class="form-control @error('password') is-invalid @enderror"
-                        name="confirm-password"
-                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                        aria-describedby="password"
-                        autocomplete="current-password" required
-                        />
-                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide" id="toggleConfirmPassword"></i></span>
-                  </div>
-               </div>
+                  <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-password"></div>
+            </div>
                <div class="my-2">
                   <label for="level" class="col-sm-12 control-label">Level</label>
                   <div class="col-sm-12">
@@ -62,6 +52,7 @@
                         <option value="3">Admin</option>
                      </select>
                   </div>
+                  <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-level"></div>
                </div>
         </div>
         <div class="modal-footer">
@@ -90,6 +81,7 @@
             <div class="my-2">
               <label for="name">Nama</label>
               <input type="text" name="name" id="name" class="form-control" required>
+              <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-names"></div>
             </div>
             <div class="my-2">
               <label for="username">Username</label>
@@ -103,31 +95,17 @@
                      <input
                         type="password"
                         id="password"
-                        class="form-control @error('password') is-invalid @enderror"
+                        class="form-control pwd"
                         name="password"
                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                         aria-describedby="password"
                         autocomplete="current-password" required
                         />
-                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide" id="togglePassword"></i></span>
+                        <span class="input-group-text cursor-pointer">
+                          <button class="btn btn-default reveal" type="button"><i class="bx bx-hide"></i></button>
+                        </span>  
                   </div>
-               </div>
-               <div class="my-3 form-password-toggle">
-                  <div class="d-flex justify-content-between">
-                     <label class="form-label" for="confirm-password">{{ __('Confirm Password') }}</label>
-                  </div>
-                  <div class="input-group input-group-merge">
-                     <input
-                        type="password"
-                        id="confirm-password"
-                        class="form-control @error('password') is-invalid @enderror"
-                        name="confirm-password"
-                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                        aria-describedby="password"
-                        autocomplete="current-password" required
-                        />
-                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide" id="toggleConfirmPassword"></i></span>
-                  </div>
+                  <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-passwords"></div>
                </div>
                <div class="my-2">
                   <label for="level" class="col-sm-12 control-label">Level</label>
@@ -139,6 +117,7 @@
                         <option value="3">Admin</option>
                      </select>
                   </div>
+                  <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-levels"></div>
                </div>
         </div>
         <div class="modal-footer">
@@ -175,44 +154,20 @@
    <script>
       $(function() {
 
-         const togglePassword = document
-            .querySelector('#togglePassword');
-            const toggleConfirmPassword = document
-            .querySelector('#toggleConfirmPassword');
-  
-        const password = document.querySelector('#password');
-        const confirmPassword = document.querySelector('#confirm-password');
-  
-        togglePassword.addEventListener('click', () => {
-  
-            // Toggle the type attribute using
-            // getAttribure() method
-            const type = password
-                .getAttribute('type') === 'password' ?
-                'text' : 'password';
-                  
-            password.setAttribute('type', type);
-  
-        });
-
-        toggleConfirmPassword.addEventListener('click', () => {
-  
-         // Toggle the type attribute using
-         // getAttribure() method
-         const type = confirmPassword
-               .getAttribute('type') === 'password' ?
-               'text' : 'password';
-               
-               confirmPassword.setAttribute('type', type);
-
-         });
+        $(".reveal").on('click',function() {
+          var $pwd = $(".pwd");
+          if ($pwd.attr('type') === 'password') {
+              $pwd.attr('type', 'text');
+          } else {
+              $pwd.attr('type', 'password');
+          }
+      });
       
       
          // add new akun ajax request
          $("#add_akun_form").submit(function(e) {
           e.preventDefault();
           const fd = new FormData(this);
-          $("#add_akun_btn").text('Adding...');
           $.ajax({
             url: '{{ route('storeAkun') }}',
             method: 'post',
@@ -233,6 +188,49 @@
               $("#add_akun_btn").text('Add Account');
               $("#add_akun_form")[0].reset();
               $("#addAkunModal").modal('hide');
+            },
+            error:function(error){
+                
+                if(error.responseJSON.name) {
+
+                    //show alert
+                    $('#alert-name').removeClass('d-none');
+                    $('#alert-name').addClass('d-block');
+
+                    //add message to alert
+                    $('#alert-name').html(error.responseJSON.name);
+                } 
+
+                if(error.responseJSON.username) {
+
+                    //show alert
+                    $('#alert-username').removeClass('d-none');
+                    $('#alert-username').addClass('d-block');
+
+                    //add message to alert
+                    $('#alert-username').html(error.responseJSON.username);
+                } 
+
+                if(error.responseJSON.password) {
+
+                //show alert
+                $('#alert-password').removeClass('d-none');
+                $('#alert-password').addClass('d-block');
+
+                //add message to alert
+                $('#alert-password').html(error.responseJSON.password);
+                } 
+
+                if(error.responseJSON.level) {
+
+                //show alert
+                $('#alert-level').removeClass('d-none');
+                $('#alert-level').addClass('d-block');
+
+                //add message to alert
+                $('#alert-level').html(error.responseJSON.level);
+                } 
+
             }
           });
         });
@@ -262,7 +260,6 @@
         e.preventDefault();
         const fd = new FormData(this);
         console.log(fd);
-        $("#edit_akun_btn").text('Updating...');
         $.ajax({
           url: '{{ route('updateAkun') }}',
           method: 'post',
@@ -283,7 +280,40 @@
             $("#edit_akun_btn").text('Update account');
             $("#edit_akun_form")[0].reset();
             $("#editAkunModal").modal('hide');
-          }
+          },
+          error:function(error){
+                
+                if(error.responseJSON.name) {
+
+                    //show alert
+                    $('#alert-names').removeClass('d-none');
+                    $('#alert-names').addClass('d-block');
+
+                    //add message to alert
+                    $('#alert-names').html(error.responseJSON.name);
+                } 
+
+                if(error.responseJSON.password) {
+
+                //show alert
+                $('#alert-passwords').removeClass('d-none');
+                $('#alert-passwords').addClass('d-block');
+
+                //add message to alert
+                $('#alert-passwords').html(error.responseJSON.password);
+                } 
+
+                if(error.responseJSON.level) {
+
+                //show alert
+                $('#alert-levels').removeClass('d-none');
+                $('#alert-levels').addClass('d-block');
+
+                //add message to alert
+                $('#alert-levels').html(error.responseJSON.level);
+                } 
+
+            }
         });
       });
       
