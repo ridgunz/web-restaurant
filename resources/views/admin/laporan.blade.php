@@ -102,6 +102,7 @@
           output += '<td>' + data[count].id + '</td>';
           output += '<td>' + data[count].tipe_order + '</td>';
           output += '<td>' + data[count].menu + '</td>';
+          output += '<td>' + data[count].topping + '</td>';
           output += '<td>' + data[count].tipe_pembayaran + '</td>';
           output += '<td>' + data[count].total_pembayaran + '</td>';
           output += '<td>' + data[count].name + '</td>';

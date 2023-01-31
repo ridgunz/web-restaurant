@@ -20,6 +20,7 @@ class AdminLaporanController extends Controller
         WHEN o.tipe_order  = '2' THEN 'Makan di Tempat'
         ELSE tipe_order END as tipe_order,
         GROUP_CONCAT(m.nama) as menu,
+        GROUP_CONCAT(mn.nama) as topping,
         o.tipe_pembayaran,
         o.total_pembayaran,
         u.name,
@@ -33,12 +34,14 @@ class AdminLaporanController extends Controller
         JOIN users u ON o.user_id = u.id 
         JOIN order_detail od ON o.id = od.order_id 
         JOIN menu m ON m.id = od.id_makanan 
+        LEFT JOIN order_detail_topping odt ON od.id = odt.order_detail_id
+        LEFT JOIN menu mn ON odt.id_topping = mn.id
         WHERE o.flag_selesai = 1
         GROUP BY o.id,
         o.tipe_order,o.tipe_pembayaran,
         o.total_pembayaran,
         u.name,u.`level`,o.created_at,
-        o.updated_at ");
+        o.updated_at");
 
         $output = '';
 		if (!empty($emps)) {
@@ -48,6 +51,7 @@ class AdminLaporanController extends Controller
                 <th>ID</th>
                 <th>Tipe Order</th>
                 <th>Menu</th>
+                <th>Topping</th>
                 <th>Tipe Pembayaran</th>
                 <th>Total Pembayaran</th>
                 <th>User</th>
@@ -62,6 +66,7 @@ class AdminLaporanController extends Controller
                 <td>' . $emp->id . '</td>
                 <td>' . $emp->tipe_order . '</td>
                 <td>' . $emp->menu . '</td>
+                <td>' . $emp->topping . '</td>
                 <td>' . $emp->tipe_pembayaran . '</td>
                 <td>' . $emp->total_pembayaran . '</td>
                 <td>' . $emp->name . '</td>
@@ -91,6 +96,7 @@ class AdminLaporanController extends Controller
             WHEN o.tipe_order  = '2' THEN 'Makan di Tempat'
             ELSE tipe_order END as tipe_order,
             GROUP_CONCAT(m.nama) as menu,
+            GROUP_CONCAT(mn.nama) as topping,
             o.tipe_pembayaran,
             o.total_pembayaran,
             u.name,
@@ -104,6 +110,8 @@ class AdminLaporanController extends Controller
             JOIN users u ON o.user_id = u.id 
             JOIN order_detail od ON o.id = od.order_id 
             JOIN menu m ON m.id = od.id_makanan 
+            LEFT JOIN order_detail_topping odt ON od.id = odt.order_detail_id
+            LEFT JOIN menu mn ON odt.id_topping = mn.id
             WHERE o.flag_selesai = 1 AND
             o.created_at BETWEEN ? AND ?
             GROUP BY o.id,
@@ -118,3 +126,4 @@ class AdminLaporanController extends Controller
   }
 }
 }
+
