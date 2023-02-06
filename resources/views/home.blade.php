@@ -108,6 +108,12 @@
                                     <h2>Manage Account</h2>
                                 </a>
                                 </div>
+                                <div class="column">
+                                <a href="{{ route('cabang') }}">
+                                    <img src="{{url('/images/cabang.png')}}" style="width:140px;height:120px">
+                                    <h2>Manage Cabang</h2>
+                                </a>
+                                </div>
                             </div>
                         @endif
                     @endif

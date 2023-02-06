@@ -12,6 +12,7 @@ use App\Http\Controllers\AdminToppingController;
 use App\Http\Controllers\AdminAkunController;
 use App\Http\Controllers\AdminAbsenController;
 use App\Http\Controllers\AdminLaporanController;
+use App\Http\Controllers\AdminCabangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -170,5 +171,15 @@ Route::middleware(['auth', 'user-access:3'])->group(function () {//admin
     Route::get('/laporan', [AdminLaporanController::class, 'indexLaporan'])->name('laporan');
     Route::get('/fetchAllOrder', [AdminLaporanController::class, 'fetchAllOrder'])->name('fetchAllOrder');
     Route::post('/fetchAllOrderx', [AdminLaporanController::class, 'fetchAllOrderx'])->name('fetchAllOrderx');
+
+      /*
+        MENU CABANG
+    */
+    Route::get('/cabang', [AdminCabangController::class, 'indexCabang'])->name('cabang');
+    Route::get('/fetchallCabang', [AdminCabangController::class, 'fetchAllCabang'])->name('fetchAllCabang');
+    Route::post('/storeCabang', [AdminCabangController::class, 'storeCabang'])->name('storeCabang');
+    Route::get('/editCabang', [AdminCabangController::class, 'editCabang'])->name('editCabang');
+    Route::post('/updateCabang', [AdminCabangController::class, 'updateCabang'])->name('updateCabang');
+    Route::delete('/deleteCabang', [AdminCabangController::class, 'deleteCabang'])->name('deleteCabang');
 });
 

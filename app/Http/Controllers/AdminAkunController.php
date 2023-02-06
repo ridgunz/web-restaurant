@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use App\Models\Cabang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -10,12 +11,14 @@ class AdminAkunController extends Controller
 {
      // set index page view
 	public function indexAkun() {
-		return view('admin.manage-account');
+        $cabangs = Cabang::where('is_active','Yes')->get();
+
+		return view('admin.manage-account',compact('cabangs'));
 	}
 
     // handle fetch all akun ajax request
 	public function fetchAllAkun() {
-		$emps = User::all();
+		$emps = User::join('cabang','cabang.id','users.cabang_id')->get();
 		$output = '';
 		if ($emps->count() > 0) {
 			$output .= '<table class="table table-striped table-sm text-center align-middle">
@@ -25,6 +28,7 @@ class AdminAkunController extends Controller
                 <th>Name</th>
                 <th>Username</th>
                 <th>Level</th>
+                <th>Cabang</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -35,6 +39,7 @@ class AdminAkunController extends Controller
                 <td>' . $emp->name . '</td>
                 <td>' . $emp->username . '</td>
                 <td>' . $emp->level . '</td>
+                <td>' . $emp->nama_cabang . '</td>
                 <td>
                   <a href="#" id="' . $emp->id . '" class="text-success mx-1 editIcon" data-bs-toggle="modal" data-bs-target="#editAkunModal"><i class="bi-pencil-square h4"></i></a>
 

@@ -21,7 +21,8 @@ class User extends Authenticatable
         'name',
         'username',
         'password',
-        'level'
+        'level',
+        'cabang_id'
     ];
 
     /**
