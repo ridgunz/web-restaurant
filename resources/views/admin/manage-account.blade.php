@@ -58,7 +58,7 @@
                   <label for="cabang" class="col-sm-12 control-label">Cabang</label>
                   <div class="col-sm-12">
                      <select name="level" class="form-control" required>
-                     <option value="">Choose</option> @foreach($cabangs as $cabang) <option value="{{ trim($cabang->nama_cabang) }}">
+                     <option value="">Choose</option> @foreach($cabangs as $cabang) <option value="{{ trim($cabang->id) }}">
                       {{ $cabang->nama_cabang }}
                     </option> @endforeach
                      </select>

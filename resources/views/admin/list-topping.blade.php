@@ -44,6 +44,15 @@
             <label for="image">Select Image</label>
             <input type="file" name="image" class="form-control" required>
           </div>
+          <div class="my-2">
+            <label for="makanan">Select Menu</label>
+            <br>
+            <select class="form-control selectpicker" multiple data-live-search="true" name="menu[]" required>
+            @foreach($menus as $menu) <option value="{{ trim($menu->nama) }}">
+            {{ $menu->nama }}
+            </option>  @endforeach
+            </select>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -102,6 +111,15 @@
           <div class="mt-2" id="image">
 
           </div>
+          <div class="my-2">
+            <label for="makanan">Select Menu</label>
+            <br>
+            <select class="form-control selectpicker" multiple data-live-search="true" name="menu[]" required>
+            @foreach($menus as $menu) <option value="{{ trim($menu->nama) }}">
+            {{ $menu->nama }}
+            </option>  @endforeach
+            </select>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -134,9 +152,16 @@
   <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js'></script>
   <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/datatables.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+        $('select').selectpicker();
+    });
+</script>
   <script>
     $(function() {
-
 
        // add new topping ajax request
        $("#add_topping_form").submit(function(e) {

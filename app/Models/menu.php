@@ -17,7 +17,8 @@ class menu extends Model
         'stock',
         'image',
         'kategori',
-        'is_active'
+        'is_active',
+        'menus'
     ];
 
     public $timestamps = true;

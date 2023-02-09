@@ -9,7 +9,9 @@ class AdminToppingController extends Controller
 {
      // set index page view
 	public function indexTopping() {
-		return view('admin.list-topping');
+		$menus = Menu::where('kategori','Makanan')->get();
+
+		return view('admin.list-topping', compact('menus'));
 	}
 
 	// handle fetch all topping ajax request
@@ -27,6 +29,7 @@ class AdminToppingController extends Controller
                 <th>Harga</th>
                 <th>Stock</th>
                 <th>Is Active</th>
+								<th>Untuk Menu</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -40,6 +43,7 @@ class AdminToppingController extends Controller
                 <td>' . $emp->amount . '</td>
                 <td>' . $emp->stock . '</td>
                 <td>' . $emp->is_active . '</td>
+								<td>' . $emp->menus . '</td>
                 <td>
                   <a href="#" id="' . $emp->id . '" class="text-success mx-1 editIcon" data-bs-toggle="modal" data-bs-target="#editToppingModal"><i class="bi-pencil-square h4"></i></a>
 
@@ -66,7 +70,10 @@ class AdminToppingController extends Controller
 			$fileName = '';
 		}
 
-		$empData = [ 'nama' => $request->nama, 'deskripsi' => $request->deskripsi, 'amount' => $request->harga, 'stock' => $request->stock, 'is_active' => $request->is_active, 'image' => $fileName, 'kategori' => 'Topping'];
+		$menus = $request->menu;
+		$menus = implode(',', $menus);
+
+		$empData = [ 'nama' => $request->nama, 'deskripsi' => $request->deskripsi, 'amount' => $request->harga, 'stock' => $request->stock, 'is_active' => $request->is_active, 'image' => $fileName, 'kategori' => 'Topping', 'menus' => $menus];
 		Menu::create($empData);
 		return response()->json([
 			'status' => 200,
@@ -95,7 +102,10 @@ class AdminToppingController extends Controller
 			$fileName = $request->topping_image;
 		}
 
-		$empData = ['nama' => $request->nama, 'deskripsi' => $request->deskripsi, 'amount' => $request->harga, 'stock' => $request->stock, 'is_active' => $request->is_active, 'image' => $fileName, 'kategori' => 'Topping'];
+		$menus = $request->menu;
+		$menus = implode(',', $menus);
+
+		$empData = ['nama' => $request->nama, 'deskripsi' => $request->deskripsi, 'amount' => $request->harga, 'stock' => $request->stock, 'is_active' => $request->is_active, 'image' => $fileName, 'kategori' => 'Topping', 'menus' => $menus];
 
 		$emp->update($empData);
 		return response()->json([
