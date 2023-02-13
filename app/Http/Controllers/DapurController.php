@@ -155,6 +155,7 @@ class DapurController extends Controller
             $absen->users_id = $id;
             $absen->flag_checkin = 1;
             $absen->flag_checkout = 0;
+            $absen->cabang_id = auth()->user()->cabang_id;
             $absen->save();
 
             return response()->json([

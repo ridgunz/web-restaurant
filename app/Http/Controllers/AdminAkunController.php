@@ -18,7 +18,8 @@ class AdminAkunController extends Controller
 
     // handle fetch all akun ajax request
 	public function fetchAllAkun() {
-		$emps = User::join('cabang','cabang.id','users.cabang_id')->get();
+		$emps = User::select('users.id','users.name','users.username','users.level','cabang.nama_cabang')
+        ->join('cabang','cabang.id','users.cabang_id')->get();
 		$output = '';
 		if ($emps->count() > 0) {
 			$output .= '<table class="table table-striped table-sm text-center align-middle">
@@ -54,6 +55,24 @@ class AdminAkunController extends Controller
 		}
 	}
 
+    public function fetchAllAkunx(Request $request)
+    {
+      {
+        if($request->ajax())
+        {
+         if($request->cabang != '')
+         {
+          $data = User::select('users.id','users.name','users.username','users.level','cabang.nama_cabang')
+            ->join('cabang','cabang.id','users.cabang_id')
+            ->where('users.cabang_id', $request->cabang)
+            ->get();
+  
+            echo json_encode($data);
+         }
+       }
+    }
+  }
+
     public function storeAkun(Request $request) {
       
 		//validate form
@@ -83,6 +102,7 @@ class AdminAkunController extends Controller
             'username'     => $request->username,
             'level'   => $request->level,
             'password'   => Hash::make($request->password),
+            'cabang_id' => $request->cabang
         ]);
 
 		return response()->json([
@@ -112,7 +132,7 @@ class AdminAkunController extends Controller
 
 		$emp = User::find($request->akun_id);
         $emp->update([
-            'name' => $request->name,'level' => $request->level,'password' => Hash::make($request->password)
+            'name' => $request->name,'level' => $request->level,'password' => Hash::make($request->password), 'cabang_id' => $request->cabang
         ]);
 		
         // $empData = ['name' => $request->name,'username' => $request->username,'level' => $request->level,'password' => Hash::make($request->password)];

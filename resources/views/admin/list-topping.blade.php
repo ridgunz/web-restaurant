@@ -45,6 +45,17 @@
             <input type="file" name="image" class="form-control" required>
           </div>
           <div class="my-2">
+                  <label for="cabang" class="col-sm-12 control-label">Cabang</label>
+                  <div class="col-sm-12">
+                     <select name="cabang" class="form-control" required>
+                     <option value="">Choose</option> @foreach($cabangs as $cabang) <option value="{{ trim($cabang->id) }}">
+                      {{ $cabang->nama_cabang }}
+                    </option> @endforeach
+                     </select>
+                  </div>
+                  <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-cabang"></div>
+               </div>
+          <div class="my-2">
             <label for="makanan">Select Menu</label>
             <br>
             <select class="form-control selectpicker" multiple data-live-search="true" name="menu[]" required>
@@ -105,6 +116,17 @@
                 </div>
           </div>
           <div class="my-2">
+                  <label for="cabang" class="col-sm-12 control-label">Cabang</label>
+                  <div class="col-sm-12">
+                     <select name="cabang" class="form-control" required>
+                     <option value="">Choose</option> @foreach($cabangs as $cabang) <option value="{{ trim($cabang->id) }}">
+                      {{ $cabang->nama_cabang }}
+                    </option> @endforeach
+                     </select>
+                  </div>
+                  <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-cabang"></div>
+               </div>
+          <div class="my-2">
             <label for="image">Select Image</label>
             <input type="file" name="image" class="form-control">
           </div>
@@ -135,6 +157,14 @@
   <div class="container">
     <div class="row my-5">
       <div class="col-lg-12">
+      <div class="form-control">
+                <select id="cabang" class="form-control" style="width: 200px">
+                <option value="">--Pilih Cabang--</option> @foreach($cabangs as $cabang) <option value="{{ trim($cabang->id) }}">
+                      {{ $cabang->nama_cabang }}
+                    </option> @endforeach
+                </select>
+           </div>
+           <br>
         <div class="card shadow">
           <div class="card-header bg-danger d-flex justify-content-between align-items-center">
             <h3 class="text-light">Manage Topping</h3>
@@ -162,6 +192,44 @@
 </script>
   <script>
     $(function() {
+
+      $('#cabang').change(function(){
+      var cabang = $('#cabang').val();
+      $('#table').DataTable().destroy();
+      fetchAllToppingx(cabang);
+    });
+
+    var _token = $('input[name="_token"]').val();
+
+    function fetchAllToppingx(cabang = '')
+      {
+        $.ajax({
+        url:"{{ route('fetchAllToppingx') }}",
+        method:"POST",
+        data:{cabang:cabang, _token:_token},
+        dataType:"json",
+        success:function(data)
+        {
+          var output = '';
+          for(var count = 0; count < data.length; count++)
+          {
+          output += '<tr>';
+          output += '<td>' + data[count].id + '</td>';
+          output += '<td> <img src="storage/images/' + data[count].image + '" width="50" class="img-thumbnail"></td>'
+          output += '<td>' + data[count].nama + '</td>';
+          output += '<td>' + data[count].deskripsi + '</td>';
+          output += '<td>' + data[count].amount + '</td>';
+          output += '<td>' + data[count].stock + '</td>';
+          output += '<td>' + data[count].nama_cabang + '</td>';
+          output += '<td>' + data[count].is_active + '</td>';
+          output += '<td>' + data[count].menus + '</td>';
+          output += '<td><a href="#" id="' + data[count].id + '" class="text-success mx-1 editIcon" data-bs-toggle="modal" data-bs-target="#editToppingModal"><i class="bi-pencil-square h4"></i></a>  <a href="#" id="' + data[count].id + '" class="text-danger mx-1 deleteIcon"><i class="bi-trash h4"></i></a> </td></tr>';
+          
+          }
+          $('tbody').html(output);
+              }
+              })
+      }
 
        // add new topping ajax request
        $("#add_topping_form").submit(function(e) {

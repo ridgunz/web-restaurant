@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 use DB;
 use Illuminate\Http\Request;
+use App\Models\Cabang;
 
 class AdminLaporanController extends Controller
 {
     public function indexLaporan() {
+      $cabangs = Cabang::where('is_active','Yes')->get();
 
-        return view('admin.laporan');
+        return view('admin.laporan',compact('cabangs'));
 	}
 
     public function fetchAllOrder()
@@ -29,11 +31,13 @@ class AdminLaporanController extends Controller
         WHEN u.`level` = '3' THEN 'Admin'
         ELSE u.`level` END as level,
         o.created_at,
-        o.updated_at 
+        o.updated_at,
+        c.nama_cabang 
         FROM `order` o
         JOIN users u ON o.user_id = u.id 
         JOIN order_detail od ON o.id = od.order_id 
         JOIN menu m ON m.id = od.id_makanan 
+        JOIN cabang c ON c.id = m.cabang_id
         LEFT JOIN order_detail_topping odt ON od.id = odt.order_detail_id
         LEFT JOIN menu mn ON odt.id_topping = mn.id
         WHERE o.flag_selesai = 1
@@ -54,6 +58,7 @@ class AdminLaporanController extends Controller
                 <th>Topping</th>
                 <th>Tipe Pembayaran</th>
                 <th>Total Pembayaran</th>
+                <th>Cabang</th>
                 <th>User</th>
                 <th>level</th>
                 <th>Created at</th>
@@ -69,6 +74,7 @@ class AdminLaporanController extends Controller
                 <td>' . $emp->topping . '</td>
                 <td>' . $emp->tipe_pembayaran . '</td>
                 <td>' . $emp->total_pembayaran . '</td>
+                <td>' . $emp->nama_cabang . '</td>
                 <td>' . $emp->name . '</td>
                 <td>' . $emp->level . '</td>
                 <td>' . $emp->created_at . '</td>
@@ -87,7 +93,7 @@ class AdminLaporanController extends Controller
     {
       if($request->ajax())
       {
-       if($request->from_date != '' && $request->to_date != '')
+       if($request->from_date != '' && $request->to_date != '' && $request->cabang != '')
        {
             $data = DB::select("SELECT 
             DISTINCT
@@ -105,20 +111,22 @@ class AdminLaporanController extends Controller
             WHEN u.`level` = '3' THEN 'Admin'
             ELSE u.`level` END as level,
             o.created_at,
-            o.updated_at 
+            o.updated_at,
+            c.nama_cabang  
             FROM `order` o
             JOIN users u ON o.user_id = u.id 
             JOIN order_detail od ON o.id = od.order_id 
             JOIN menu m ON m.id = od.id_makanan 
+            JOIN cabang c ON c.id = m.cabang_id
             LEFT JOIN order_detail_topping odt ON od.id = odt.order_detail_id
             LEFT JOIN menu mn ON odt.id_topping = mn.id
-            WHERE o.flag_selesai = 1 AND
+            WHERE o.flag_selesai = 1 AND m.cabang_id = ? AND
             o.created_at BETWEEN ? AND ?
             GROUP BY o.id,
             o.tipe_order,o.tipe_pembayaran,
             o.total_pembayaran,
             u.name,u.`level`,o.created_at,
-            o.updated_at",[$request->from_date, $request->to_date]);
+            o.updated_at",[$request->cabang, $request->from_date, $request->to_date]);
 
           echo json_encode($data);
        }

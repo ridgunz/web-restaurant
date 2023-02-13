@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Menu;
+use App\Models\Cabang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -9,12 +10,16 @@ class AdminMinumanController extends Controller
 {
      // set index page view
 	public function indexMinuman() {
-		return view('admin.list-minuman');
+		$cabangs = Cabang::where('is_active','Yes')->get();
+
+		return view('admin.list-minuman',compact('cabangs'));
 	}
 
 	// handle fetch all makanan ajax request
 	public function fetchAllMinuman() {
-		$emps = Menu::where('kategori','Minuman')->orderBy('is_active','desc')->get();
+		$emps = Menu::select('menu.id','menu.image','menu.nama','menu.deskripsi','menu.amount','cabang.nama_cabang','menu.stock','menu.is_active')
+		->join('cabang','cabang.id','menu.cabang_id')
+		->where('kategori','Minuman')->orderBy('is_active','desc')->get();
 		$output = '';
 		if ($emps->count() > 0) {
 			$output .= '<table class="table table-striped table-sm text-center align-middle">
@@ -26,6 +31,7 @@ class AdminMinumanController extends Controller
                 <th>Deskripsi</th>
                 <th>Harga</th>
                 <th>Stock</th>
+								<th>Cabang</th>
                 <th>Is Active</th>
                 <th>Action</th>
               </tr>
@@ -39,6 +45,7 @@ class AdminMinumanController extends Controller
                 <td>' . $emp->deskripsi . '</td>
                 <td>' . $emp->amount . '</td>
                 <td>' . $emp->stock . '</td>
+								<td>' . $emp->nama_cabang . '</td>
                 <td>' . $emp->is_active . '</td>
                 <td>
                   <a href="#" id="' . $emp->id . '" class="text-success mx-1 editIcon" data-bs-toggle="modal" data-bs-target="#editMinumanModal"><i class="bi-pencil-square h4"></i></a>
@@ -54,6 +61,33 @@ class AdminMinumanController extends Controller
 		}
 	}
 
+	public function fetchAllMinumanx(Request $request)
+	{
+		{
+			if($request->ajax())
+			{
+			 if($request->cabang != '')
+			 {
+				$data = Menu::select('menu.id','menu.image','menu.nama','menu.deskripsi','menu.amount','cabang.nama_cabang','menu.stock','menu.is_active')
+					->join('cabang','cabang.id','menu.cabang_id')
+					->where('kategori','Minuman')->orderBy('is_active','desc')
+					->where('menu.cabang_id', $request->cabang)
+					->get();
+
+					echo json_encode($data);
+			 }else
+			 {
+				$data = Menu::select('menu.id','menu.image','menu.nama','menu.deskripsi','menu.amount','cabang.nama_cabang','menu.stock','menu.is_active')
+				->join('cabang','cabang.id','menu.cabang_id')
+				->where('kategori','Minuman')->orderBy('is_active','desc')->get();
+
+					echo json_encode($data);
+
+			 }
+		 }
+	}
+}
+
     	// handle insert a new minuman ajax request
 	public function storeMinuman(Request $request) {
 		if($request-> file('image') != null)
@@ -66,7 +100,7 @@ class AdminMinumanController extends Controller
 			$fileName = '';
 		}
 
-		$empData = [ 'nama' => $request->nama, 'deskripsi' => $request->deskripsi, 'amount' => $request->harga, 'stock' => $request->stock, 'is_active' => $request->is_active, 'image' => $fileName, 'kategori' => 'Minuman'];
+		$empData = [ 'nama' => $request->nama, 'deskripsi' => $request->deskripsi, 'amount' => $request->harga, 'stock' => $request->stock, 'is_active' => $request->is_active, 'image' => $fileName, 'kategori' => 'Minuman','cabang_id' => $request->cabang];
 		Menu::create($empData);
 		return response()->json([
 			'status' => 200,
@@ -95,7 +129,7 @@ class AdminMinumanController extends Controller
 			$fileName = $request->minuman_image;
 		}
 
-		$empData = ['nama' => $request->nama, 'deskripsi' => $request->deskripsi, 'amount' => $request->harga, 'stock' => $request->stock, 'is_active' => $request->is_active, 'image' => $fileName, 'kategori' => 'Minuman'];
+		$empData = ['nama' => $request->nama, 'deskripsi' => $request->deskripsi, 'amount' => $request->harga, 'stock' => $request->stock, 'is_active' => $request->is_active, 'image' => $fileName, 'kategori' => 'Minuman','cabang_id' => $request->cabang];
 
 		$emp->update($empData);
 		return response()->json([

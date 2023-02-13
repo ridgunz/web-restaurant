@@ -18,6 +18,14 @@
     </div>
     <div class="row my-5">
       <div class="col-lg-12">
+      <div class="form-control">
+                <select id="cabang" name="cabang" class="form-control" style="width: 200px">
+                <option value="">--Pilih Cabang--</option> @foreach($cabangs as $cabang) <option value="{{ trim($cabang->id) }}">
+                      {{ $cabang->nama_cabang }}
+                    </option> @endforeach
+                </select>
+           </div>
+           <br>
         <div class="card shadow">
           <div class="card-header bg-danger d-flex justify-content-between align-items-center">
             <h3 class="text-light">Report Order</h3>
@@ -86,12 +94,12 @@
         });
       }
 
-      function fetchAllOrderx(from_date = '', to_date = '')
+      function fetchAllOrderx(from_date = '', to_date = '', cabang = '')
       {
         $.ajax({
         url:"{{ route('fetchAllOrderx') }}",
         method:"POST",
-        data:{from_date:from_date, to_date:to_date, _token:_token},
+        data:{from_date:from_date, to_date:to_date, cabang:cabang,_token:_token},
         dataType:"json",
         success:function(data)
         {
@@ -105,6 +113,7 @@
           output += '<td>' + data[count].topping + '</td>';
           output += '<td>' + data[count].tipe_pembayaran + '</td>';
           output += '<td>' + data[count].total_pembayaran + '</td>';
+          output += '<td>' + data[count].nama_cabang + '</td>';
           output += '<td>' + data[count].name + '</td>';
           output += '<td>' + data[count].level + '</td>';
           output += '<td>' + data[count].created_at + '</td>';
@@ -119,14 +128,16 @@
     $('#filter').click(function(){
     var from_date = $('#from_date').val();
     var to_date = $('#to_date').val();
-    if(from_date != '' &&  to_date != '')
+     var cabang = $('#cabang').val();
+
+    if(from_date != '' &&  to_date != '' && cabang != '')
     {
       $('#table').DataTable().destroy();
-      fetchAllOrderx(from_date, to_date);
+      fetchAllOrderx(from_date, to_date, cabang);
     }
     else
     {
-    alert('Both Date is required');
+    alert('Filter data belum lengkap');
     }
   });
 

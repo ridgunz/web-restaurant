@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->enum('kategori', ['Makanan', 'Minuman','Topping']);
             $table->string('is_active')->default('No');
+            $table->integer('cabang_id');
             $table->timestamps();
         });
     }

@@ -18,6 +18,14 @@
     </div>
     <div class="row my-5">
       <div class="col-lg-12">
+      <div class="form-control">
+                <select id="cabang" name="cabang" class="form-control" style="width: 200px">
+                <option value="">--Pilih Cabang--</option> @foreach($cabangs as $cabang) <option value="{{ trim($cabang->id) }}">
+                      {{ $cabang->nama_cabang }}
+                    </option> @endforeach
+                </select>
+           </div>
+           <br>
         <div class="card shadow">
           <div class="card-header bg-danger d-flex justify-content-between align-items-center">
             <h3 class="text-light">Report Absensi</h3>
@@ -64,12 +72,12 @@
         });
       }
 
-      function fetchAllAbsenx(from_date = '', to_date = '')
+      function fetchAllAbsenx(from_date = '', to_date = '', cabang = '')
       {
         $.ajax({
         url:"{{ route('fetchAllAbsenx') }}",
         method:"POST",
-        data:{from_date:from_date, to_date:to_date, _token:_token},
+        data:{from_date:from_date, to_date:to_date, cabang:cabang, _token:_token},
         dataType:"json",
         success:function(data)
         {
@@ -80,6 +88,7 @@
           output += '<td>' + data[count].id + '</td>';
           output += '<td>' + data[count].name + '</td>';
           output += '<td>' + data[count].level + '</td>';
+          output += '<td>' + data[count].nama_cabang + '</td>';
           output += '<td>' + data[count].created_at + '</td>';
           output += '<td>' + data[count].updated_at + '</td></tr>';
           }
@@ -92,20 +101,22 @@
     $('#filter').click(function(){
     var from_date = $('#from_date').val();
     var to_date = $('#to_date').val();
-    if(from_date != '' &&  to_date != '')
+    var cabang = $('#cabang').val();
+    if(from_date != '' &&  to_date != '' && cabang != '')
     {
       $('#table').DataTable().destroy();
-      fetchAllAbsenx(from_date, to_date);
+      fetchAllAbsenx(from_date, to_date, cabang);
     }
     else
     {
-    alert('Both Date is required');
+    alert('Filter data harus lengkap');
     }
   });
 
   $('#refresh').click(function(){
     $('#from_date').val('');
     $('#to_date').val('');
+    $('#cabang').val('');
     fetchAllAbsens();
   });
 

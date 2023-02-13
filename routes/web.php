@@ -121,6 +121,7 @@ Route::middleware(['auth', 'user-access:3'])->group(function () {//admin
     Route::get('/edit', [AdminMakananController::class, 'edit'])->name('edit');
     Route::post('/update', [AdminMakananController::class, 'update'])->name('update');
     Route::delete('/delete', [AdminMakananController::class, 'delete'])->name('delete');
+    Route::post('/fetchAllMakananx', [AdminMakananController::class, 'fetchAllMakananx'])->name('fetchAllMakananx');
 
     /*
         MENU MINUMAN
@@ -131,6 +132,7 @@ Route::middleware(['auth', 'user-access:3'])->group(function () {//admin
     Route::get('/editMinuman', [AdminMinumanController::class, 'editMinuman'])->name('editMinuman');
     Route::post('/updateMinuman', [AdminMinumanController::class, 'updateMinuman'])->name('updateMinuman');
     Route::delete('/deleteMinuman', [AdminMinumanController::class, 'deleteMinuman'])->name('deleteMinuman');
+    Route::post('/fetchAllMinumanx', [AdminMinumanController::class, 'fetchAllMinumanx'])->name('fetchAllMinumanx');
 
 
      /*
@@ -142,6 +144,7 @@ Route::middleware(['auth', 'user-access:3'])->group(function () {//admin
     Route::get('/editTopping', [AdminToppingController::class, 'editTopping'])->name('editTopping');
     Route::post('/updateTopping', [AdminToppingController::class, 'updateTopping'])->name('updateTopping');
     Route::delete('/deleteTopping', [AdminToppingController::class, 'deleteTopping'])->name('deleteTopping');
+    Route::post('/fetchAllToppingx', [AdminToppingController::class, 'fetchAllToppingx'])->name('fetchAllToppingx');
 
 
     /*
@@ -154,6 +157,7 @@ Route::middleware(['auth', 'user-access:3'])->group(function () {//admin
     Route::get('/editAkun', [AdminAkunController::class, 'editAkun'])->name('editAkun');
     Route::post('/updateAkun', [AdminAkunController::class, 'updateAkun'])->name('updateAkun');
     Route::delete('/deleteAkun', [AdminAkunController::class, 'deleteAkun'])->name('deleteAkun');
+    Route::post('/fetchAllAkunx', [AdminAkunController::class, 'fetchAllAkunx'])->name('fetchAllAkunx');
 
 
      /*

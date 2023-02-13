@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Menu;
+use App\Models\Cabang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -10,13 +11,17 @@ class AdminToppingController extends Controller
      // set index page view
 	public function indexTopping() {
 		$menus = Menu::where('kategori','Makanan')->get();
+		$cabangs = Cabang::where('is_active','Yes')->get();
 
-		return view('admin.list-topping', compact('menus'));
+		return view('admin.list-topping', compact('menus','cabangs'));
 	}
 
 	// handle fetch all topping ajax request
 	public function fetchAllTopping() {
-		$emps = Menu::where('kategori','Topping')->orderBy('is_active','desc')->get();
+		$emps = Menu::select('menu.id','menu.image','menu.nama','menu.deskripsi','menu.amount','cabang.nama_cabang','menu.stock','menu.is_active','menu.menus')
+		->join('cabang','cabang.id','menu.cabang_id')
+		->where('kategori','Topping')->orderBy('is_active','desc')
+		->get();
 		$output = '';
 		if ($emps->count() > 0) {
 			$output .= '<table class="table table-striped table-sm text-center align-middle">
@@ -28,6 +33,7 @@ class AdminToppingController extends Controller
                 <th>Deskripsi</th>
                 <th>Harga</th>
                 <th>Stock</th>
+								<th>Cabang</th>
                 <th>Is Active</th>
 								<th>Untuk Menu</th>
                 <th>Action</th>
@@ -42,6 +48,7 @@ class AdminToppingController extends Controller
                 <td>' . $emp->deskripsi . '</td>
                 <td>' . $emp->amount . '</td>
                 <td>' . $emp->stock . '</td>
+								<td>' . $emp->nama_cabang . '</td>
                 <td>' . $emp->is_active . '</td>
 								<td>' . $emp->menus . '</td>
                 <td>
@@ -58,6 +65,33 @@ class AdminToppingController extends Controller
 		}
 	}
 
+	public function fetchAllToppingx(Request $request)
+	{
+		{
+			if($request->ajax())
+			{
+			 if($request->cabang != '')
+			 {
+				$data = Menu::select('menu.id','menu.image','menu.nama','menu.deskripsi','menu.amount','cabang.nama_cabang','menu.stock','menu.is_active','menu.menus')
+					->join('cabang','cabang.id','menu.cabang_id')
+					->where('kategori','Topping')->orderBy('is_active','desc')
+					->where('menu.cabang_id', $request->cabang)
+					->get();
+
+					echo json_encode($data);
+			 }else
+			 {
+				$data = Menu::select('menu.id','menu.image','menu.nama','menu.deskripsi','menu.amount','cabang.nama_cabang','menu.stock','menu.is_active','menu.menus')
+				->join('cabang','cabang.id','menu.cabang_id')
+				->where('kategori','Topping')->orderBy('is_active','desc')->get();
+
+					echo json_encode($data);
+
+			 }
+		 }
+	}
+}
+
     	// handle insert a new topping ajax request
 	public function storeTopping(Request $request) {
 		if($request-> file('image') != null)
@@ -73,7 +107,7 @@ class AdminToppingController extends Controller
 		$menus = $request->menu;
 		$menus = implode(',', $menus);
 
-		$empData = [ 'nama' => $request->nama, 'deskripsi' => $request->deskripsi, 'amount' => $request->harga, 'stock' => $request->stock, 'is_active' => $request->is_active, 'image' => $fileName, 'kategori' => 'Topping', 'menus' => $menus];
+		$empData = [ 'nama' => $request->nama, 'deskripsi' => $request->deskripsi, 'amount' => $request->harga, 'stock' => $request->stock, 'is_active' => $request->is_active, 'image' => $fileName, 'kategori' => 'Topping', 'menus' => $menus,  'cabang_id' => $request->cabang];
 		Menu::create($empData);
 		return response()->json([
 			'status' => 200,
@@ -105,7 +139,7 @@ class AdminToppingController extends Controller
 		$menus = $request->menu;
 		$menus = implode(',', $menus);
 
-		$empData = ['nama' => $request->nama, 'deskripsi' => $request->deskripsi, 'amount' => $request->harga, 'stock' => $request->stock, 'is_active' => $request->is_active, 'image' => $fileName, 'kategori' => 'Topping', 'menus' => $menus];
+		$empData = ['nama' => $request->nama, 'deskripsi' => $request->deskripsi, 'amount' => $request->harga, 'stock' => $request->stock, 'is_active' => $request->is_active, 'image' => $fileName, 'kategori' => 'Topping', 'menus' => $menus, 'cabang_id' => $request->cabang];
 
 		$emp->update($empData);
 		return response()->json([

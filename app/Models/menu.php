@@ -18,7 +18,8 @@ class menu extends Model
         'image',
         'kategori',
         'is_active',
-        'menus'
+        'menus',
+        'cabang_id'
     ];
 
     public $timestamps = true;
